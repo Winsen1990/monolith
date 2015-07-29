@@ -1,0 +1,40 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<div class="toptext">
+    <div class="text">
+        <div class="left">
+            欢迎光临圆梦壹号官网，即刻尊享“1元注册深圳公司”
+        </div>
+        <div class="right">
+            {foreach from=$nav.top name=nav_top item=nav_top}
+            <a href="{$nav_top.url}">{$nav_top.name|escape}</a>
+            {if !$smarty.foreach.nav_top.last}
+            |
+            {/if}
+            {/foreach}
+        </div>
+    </div>
+</div>
+
+<div class="header">
+    <div class="head">
+        <div class="logo">
+            <div class="left">
+                <a href=""><img src="{$template_dir}images/logo.gif" alt="{$config.site_name}"></a>
+            </div>
+            <div class="right">
+                <a href=""><img src="{$template_dir}images/tel.gif" alt=""></a>
+            </div>
+        </div>
+    </div>
+    <div class="nav">
+        <div class="navul">
+            <ul id="menu">
+                {foreach from=$nav.middle name=nav_middle item=nav_middle}
+                <li id="m{$smarty.foreach.nav_middle.iteration}">
+                    <a href="{$nav_middle.url}" {if $nav_middle.current}class="menu_hover"{/if}>{$nav_middle.name|escape}</a>
+                </li>
+                {/foreach}
+            </ul>
+        </div>
+    </div>
+</div>

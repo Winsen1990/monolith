@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>{$config.site_name}</title>
+    <meta name="keywords" content="{$config.keywords}">
+    <meta name="description" content="{$config.description}">
+    <link href="{$template_dir}css/style.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="{$template_dir}js/jquery.js"></script>
+    <script type="text/javascript" src="{$template_dir}js/banner.js"></script>
+
+</head>
+<body>
+{include file="header.phtml"}
+
+<div class="banner0">
+    <img src="{$template_dir}images/banner01.gif" alt="">
+</div>
+
+<div class="clear"></div>
+
+<div class="main_n">
+<div class="nleft">
+    {include file="slider.phtml"}    
+</div>
+
+    <div class="nright">
+        <div class="mbx">
+            你现在的位置：<a href='http://127.0.0.1'>主页</a> > <a href='/wenti_zc/'>常见问题</a> >
+        </div>
+        <div class="list">
+            <ul>
+                <li><a href="wenti_zc/101.html" >公司必须先办理名称预先核准？</a></li><li><a href="wenti_zc/100.html" >公司名称加“广东省”需要哪里审批？</a></li><li><a href="wenti_zc/99.html" >公司名称能使“集团”字样吗？</a></li><li><a href="wenti_zc/98.html" >公司名称前面可以不加“深圳市”吗？</a></li><li><a href="wenti_zc/97.html" >公司名称中能不能不要“有限”这两个字？</a></li><li><a href="wenti_zc/96.html" >可以用国外某地地名作为公司名称吗？</a></li><li><a href="wenti_zc/95.html" >可以注册“研究所”公司吗？</a></li><li><a href="wenti_zc/94.html" >企业名称能使用阿拉伯数字吗？</a></li><li><a href="wenti_zc/93.html" >3月1日以后办公司可以认缴0元注册资本吗</a></li><li><a href="wenti_zc/92.html" >2013深圳新公司注册不用注册资本吗</a></li><li><a href="wenti_zc/91.html" >个人独资企业有注册资本要求吗？</a></li><li><a href="wenti_zc/90.html" >可以只认缴1元注册资本吗</a></li><li><a href="wenti_zc/89.html" >领取执照后，公司账户里的资金什么时候可以使</a></li><li><a href="wenti_zc/88.html" >领执照后公司账户的资金什么时候可用？</a></li><li><a href="wenti_zc/87.html" >如何了解一家公司有没有实力和资金</a></li><li><a href="wenti_zc/86.html" >试行注册资本认缴在哪些行业和区域？</a></li><li><a href="wenti_zc/85.html" >一人有限责任公司的注册资本最低限额是多少？</a></li><li><a href="wenti_zc/84.html" >营业执照上不显示注册资本、实收资本、经营范</a></li>
+                </li>
+        </div>
+        <div class="pagelist">
+            <ul>
+                <li>首页</li>
+                <li class="thisclass">1</li>
+                <li><a href='list_2.html'>2</a></li>
+                <li><a href='list_3.html'>3</a></li>
+                <li><a href='list_4.html'>4</a></li>
+                <li><a href='list_5.html'>5</a></li>
+                <li><a href='list_2.html'>下一页</a></li>
+                <li><a href='list_5.html'>末页</a></li>
+                <li><select name='sldd' style='width:36px' onchange='location.href=this.options[this.selectedIndex].value;'>
+                    <option value='list_1.html' selected>1</option>
+                    <option value='list_2.html'>2</option>
+                    <option value='list_3.html'>3</option>
+                    <option value='list_4.html'>4</option>
+                    <option value='list_5.html'>5</option>
+                </select></li>
+
+            </ul>
+        </div>
+
+    </div>
+
+
+</div>
+
+<div class="clear"></div>
+
+{include file="footer.phtml"}
+</body>
+
+</html>

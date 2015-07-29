@@ -29,7 +29,38 @@ $data[] = array(
     array('key'=>'cthumb_width', 'name'=>'内容缩略图宽度', 'value'=>'', 'type'=>'text', 'group'=>'themes'),
     array('key'=>'coriginal_height', 'name'=>'内容大图高度', 'value'=>'', 'type'=>'text', 'group'=>'themes'),
     array('key'=>'coriginal_width', 'name'=>'内容大图宽度', 'value'=>'', 'type'=>'text', 'group'=>'themes'),
-    array('key'=>'statistics', 'name'=>'统计', 'value'=>'1', 'type'=>'radio', 'group'=>'config')
+    array('key'=>'statistics', 'name'=>'统计', 'value'=>'1', 'type'=>'radio', 'group'=>'config'),
+    array('key'=>'owner', 'name'=>'网站主体', 'value'=>'广州君穗信息科技有限公司', 'type'=>'text', 'group'=>'config')
+);
+
+//管理员
+$table[] = 'admin';
+$data[] = array(
+    array('account'=>'kwanson', 'password'=>md5('kwanson'.PASSWORD_END), 'email'=>'support@kwanson.com', 'name'=>'君穗科技', 
+          'sex'=>'M', 'role_id'=>1)
+);
+
+$user_purview = array();
+foreach($purview as $group)
+{
+    foreach($group['items'] as $items)
+    {
+        foreach($items['operations'] as $item)
+        {
+            $user_purview[] = $item['purview'];
+        }
+    }
+}
+//角色
+$table[] = 'role';
+$data[] = array(
+    array('id'=>1, 'name'=>'超级管理员', 'purview'=>json_encode($user_purview))
+);
+
+//栏目
+$table[] = 'section';
+$data[] = array(
+    array('id'=>1, 'section_name'=>'系统保留分类', 'parent_id'=>0, 'path'=>'1,')
 );
 
 echo '初始化数据:<br/>';

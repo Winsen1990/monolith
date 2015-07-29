@@ -1,0 +1,30 @@
+<!--  footer  -->
+<div class="footer">
+    <div class="foot">
+        <dl>
+            {foreach from=$nav.bottom name=nav_bottom item=nav_bottom}
+            <dd>
+                <a href="{$nav_bottom.url}">{$nav_bottom.name|escape}</a>
+                {if intval(count($nav.bottom)/2) != $smarty.foreach.nav_bottom.iteration && !$smarty.foreach.nav_bottom.last}
+                &nbsp;|
+                {/if}
+            </dd>
+            {if intval(count($nav.bottom)/2) == $smarty.foreach.nav_bottom.iteration}
+            <dt><img src="{$template_dir}images/footer.gif"></dt>
+            {/if}
+            {/foreach}
+        </dl>
+        <p>{$config.owner} <a href="http://www.miitbeian.gov.cn/"><font color="#FFFFFF  ">{$config.icp}</font></a></p>
+        <p>公司地址：{$config.address}</p>
+        <p><a href="#"><font color="#FFFFF">圆梦一号</font></a>创业热线：{$config.phone} 企业QQ：{$config.server}</p>
+        <p>合作机构：中国工商银行 中国建设银行 招商银行 中信银行 平安银行</p>
+        <div class="top"><a href="#"><img src="{$template_dir}images/top.gif"></a></div>
+    </div>
+</div>
+
+<div class="kefu">
+    <ul>
+        <li><img src="{$template_dir}images/ewm.png"></li>
+    </ul>
+</div>
+<!-- footer -->

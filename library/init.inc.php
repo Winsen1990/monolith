@@ -20,7 +20,7 @@ $loader->setConfigs($configs);
 
 $class_list = array('Smarty', 'Logs', 'MySQL', 'Code');
 $loader->includeClass($class_list);
-$script_list = array('configs','functions','lang');
+$script_list = array('configs','functions','lang', 'purview');
 $loader->includeScript($script_list);
 //初始化数据库链接
 global $db;
@@ -61,3 +61,26 @@ if($debug_mode)
 assign('LANG', $lang);
 //设置网站参数
 assign('config', $config);
+//设置模板路径
+assign('template_dir', 'themes/'.$config['themes'].'/');
+
+//获取导航栏
+$get_nav = 'select `name`,`url`,`position` from '.$db->table('nav').' order by position ASC, order_view ASC';
+
+$nav_tmp = $db->fetchAll($get_nav);
+$nav = array(
+    'top' => array(),
+    'middle' => array(),
+    'bottom' => array()
+);
+
+foreach($nav_tmp as $n)
+{
+    $nav[$n['position']][] = array(
+        'name' => $n['name'],
+        'url' => $n['url'],
+        'current' => false
+    );
+}
+
+assign('nav', $nav);

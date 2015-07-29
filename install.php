@@ -118,7 +118,8 @@ $sql[] = 'create table if not exists '.$db->table('nav').' (
     `name` varchar(255) not null,
     `url` varchar(255) not null,
     `parent_id` int not null default \'0\',
-    `position` varchar(255) not null
+    `position` varchar(255) not null,
+    `order_view` int not null default \'50\'
 ) default charset=utf8;';
 
 echo '创建数据库表:<br/>';

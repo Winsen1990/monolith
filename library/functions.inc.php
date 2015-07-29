@@ -237,14 +237,13 @@ function backup($tables = null)
                 $data_sql = substr($data_sql, 0, strlen($data_sql)-1);
                 $data_sql .= ')';
 
-                if($i != $record_count-1 && $i%255 != 0)
+                if($i != $record_count-1 && (($i+1)%256 != 0 || $i == 0))
                 {
                     $data_sql .= ",\n";
                 } else {
                     $data_sql .= ";\n";
                 }
             }
-            $data_sql .= ';';
         }
 
         $content .= sprintf($create_sql_format, $create_table_sql, $data_sql);
