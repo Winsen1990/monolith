@@ -2,9 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>{$config.site_name}</title>
-    <meta name="keywords" content="{$config.keywords}">
-    <meta name="description" content="{$config.description}">
+    <title>{$page_title}-{$config.site_name}</title>
+    <meta name="keywords" content="{$article.keywords}">
+    <meta name="description" content="{$article.description}">
     <link href="{$template_dir}css/style.css" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="{$template_dir}js/jquery.js"></script>
     <script type="text/javascript" src="{$template_dir}js/banner.js"></script>
@@ -27,43 +27,16 @@
 
     <div class="nright">
         <div class="mbx">
-            你现在的位置：<a href='http://127.0.0.1'>主页</a> > <a href='/jianjie/'>关于我们</a>
+            你现在的位置：<a href="index.php">主页</a> > <a href="article_list.php?id={$section.id}">{$section.section_name}</a>
         </div>
         <div class="artcontent">
+            <h1>{$article.title}</h1>
+            <div class="laiyuan">作者：{$article.author} 发布日期:{$article.add_time}</div>
             <div class="body">
-                <div style="text-align: center; ">
-                    <span style="font-size:14px;"><strong>深圳海鹏圆梦壹号财税服务有限公司简介</strong></span></div>
-<span style="font-size:14px;">&nbsp;<br />
-&nbsp; &nbsp; 深圳海鹏圆梦壹号财税服务有限公司（简称&ldquo;<span style="color: rgb(255, 0, 0); "><strong>圆梦壹号</strong></span>&rdquo;）秉持&ldquo;让想创业的人轻松创业&rdquo;的理念，致力为中小微企业提供工商（注册、变更、商标、专利）、会计、税务、法律、金融等360&deg;全方位、一站式企业托管服务，帮助创业者从繁杂的事务中&ldquo;解放&rdquo;出来，大大降低初创企业的人力成本、财力成本、时间成本，实现&ldquo;轻负担&rdquo;创业。<br />
-&nbsp;<br />
-&nbsp; &nbsp; 多年的从业经历，我们见证并深知创业者的艰辛与不易！他们面临的不仅仅是企业运营经费开支压力，更有来自市场竞争的压力。圆梦壹号的使命就是要为创业者有效&ldquo;减压&rdquo;，因此我们隆重出台&ldquo;帮扶政策&rdquo;就是：堪称&ldquo;史上最优惠、最快捷的公司注册解决方案&rdquo;&mdash;&mdash;<span style="color:#0000cd;">1元</span>注册深圳公司服务：手续全包、费用全免、力求7天办结！其次是成为圆梦壹号的签约客户后，还将享受开业辅导、企业老总专项财税培训、银行开户、一般纳税人申请、商标专利申、法律咨询、财税疑难问题解答等多项免费增值服务。值得强调的是，我们提供给创业者的多项免费增值服务，并非建立在牺牲服务质量基础之上的，相反，我们非常认真对待对每一家客户的每一次服务，因为我们希望与客户建立长期稳固的合作关系，共创辉煌！<br />
-&nbsp;<br />
-&nbsp; &nbsp; 企业财税服务一直是圆梦壹号的专长所在。为中小微企业提供专业规范的代理记账报税服务是我们的价值所在。我们拥有专业稳定的会计做账团队、税务团队及客服团队，我们始终严格按照&ldquo;您企业三年之后（预计）IPO的标准为您做账&rdquo;的要求，以负责任的态度给每一家客户做好账报好税，确保客户企业未来选择IPO了无须重新补账、重做账。<br />
-&nbsp;<br />
-&nbsp; &nbsp; 深圳海鹏圆梦壹号财税服务有限公司隶属于深圳海鹏会计事务所。总公司是一家集会计事务所、税务事务所、投资管理咨询有限公司、财税服务公司、前海金融服务公司为一体的大型综合财税工商服务机构，资质全面、技术实力雄厚。公司地处福田车公庙核心商业圈内，人员规模近200人（并持续增长），包括庞大的工商办理团队、会计团队、税务团队、审计团队、客服团队、综合服务团队等，云集一批优秀的注册会计师、注册税务师、资深会计师及公司注册专家等。<br />
-&nbsp;<br />
-&nbsp; &nbsp; 总公司具有良好的社会信誉度和行业公信力，2009年，公司被深圳市福田区财政局评定为最高评级的A＋级代理记账机构，公司不仅是深圳市注册税务师协会会员单位、深圳市注册会计师协会会员单位，而且还是中国机械工业审计学会常务理事单位。中央财经大学还曾在公司建立了&ldquo;中央财经大学会计税务专业实习就业基地&rdquo;。<br />
-&nbsp;<br />
-&nbsp; &nbsp; 经营理念：立足深圳、服务全国；恪守诚信、效率、责任的服务理念。<br />
-&nbsp; &nbsp; 服务原则：客观、公正、独立、守信。<br />
-&nbsp; &nbsp; 服务方针：以质量求生存、以信誉求发展。<br />
-<br />
-&nbsp; &nbsp;了解我们：</span>
-                <div style="text-align: center; ">
-	<span style="font-size:14px;"><img alt="办公一角" src="{$template_dir}images/1-140R51Q9391c.jpg" style="width: 300px; height: 190px; " /><img alt="工商注册团队" src="{$template_dir}images/1-140Z31T022K2.png" style="width: 300px; height: 190px; " /><br />
-	办公一角 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 工商注册团队户外活动<br />
-	<img alt="认真记账" src="{$template_dir}images/1-140R51R012U9.jpg" style="width: 300px; height: 190px; " /><img alt="专家培训" src="{$template_dir}images/1-140R51R20T42.jpg" style="width: 300px; height: 190px; " /><br />
-	会计部 6组专注工作中 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 第32期企业老总财税培训<br />
-	<img alt="记账凭证" src="{$template_dir}images/1-140R51R344151.jpg" style="width: 300px; height: 190px; " /><img alt="档案柜" src="{$template_dir}images/1-140RGP50XD.png" style="width: 300px; height: 191px; " /></span></div>
-                <div style="text-align: center; ">
-                    <span style="font-size:14px;">专用记账凭证 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 材料室C区档案柜</span></div>
-                <br />
-
+            {$article.content}
             </div>
         </div>
     </div>
-
-
 </div>
 
 <div class="clear"></div>

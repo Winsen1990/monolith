@@ -1,20 +1,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <div class="cates">
-    <div class="cate_t">关于我们</div>
+    <div class="cate_t">{$page_title}</div>
     <div class="content">
         <dl>
-            <dd><a href="neizi_zc/200.html"><font color="blue">1元注册深圳公司</font></a></dd>
-            <dd><a href="jizhang/199.html"><font color="blue">代理记账报税服务</font></a></dd>
-            <dd><a href="qianhai/195.html"><font color="blue">前海公司注册流程</font></a></dd>
-            <dd><a href="waizi_zc/119.html">外商独资公司注册</a></dd>
-            <dd><a href="jizhang/199.html">代理记账报税服务</a></dd>
-            <dd><a href="jizhang/138.html">新注册企业需做账报税</a></dd>
-            <dd><a href="neizi_zc/198.html">2014深圳公司注册新政策</a></dd>
-            <dd><a href="neizi_zc/4.html">公司注册名称核准</a></dd>
-            <dd><a href="neizi_zc/10.html">公司经营范围参考</a></dd>
-            <dd><a href="jizhang/145.html">小型微利企业所得税优惠</a></dd>
-            <dd><a href="jizhang/137.html">新公司何时开始报税建账</a></dd>
-            <dd><a href="qianhai/197.html">前海企业所得税优惠政策</a></dd>
+            {foreach from=$top_article item=article}
+            <dd><a href="article.php?id={$article.id}">{$article.title|truncate:12}</a></dd>
+            {/foreach}
         </dl>
     </div>
 </div>

@@ -20,7 +20,7 @@ $loader->setConfigs($configs);
 
 $class_list = array('Smarty', 'Logs', 'MySQL', 'Code');
 $loader->includeClass($class_list);
-$script_list = array('configs','functions','lang', 'purview');
+$script_list = array('configs','functions','lang', 'purview', 'content', 'section', 'statistics');
 $loader->includeScript($script_list);
 //初始化数据库链接
 global $db;
@@ -84,3 +84,9 @@ foreach($nav_tmp as $n)
 }
 
 assign('nav', $nav);
+
+//获取置顶文章
+$get_top_article = 'select `id`,`title` from '.$db->table('content').' order by order_view ASC limit 12';
+
+$top_article = $db->fetchAll($get_top_article);
+assign('top_article', $top_article);
