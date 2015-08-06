@@ -16,12 +16,15 @@
  */
 function check_purview($sys_purview, $user_purview)
 {
-    if($sys_purview & $user_purview)
-    {
-        return true;
-    } else {
-        return false;
+    $user_purview = json_decode($user_purview);
+    $has_power = false;
+    foreach( $user_purview as $key => $value ) {
+        if( in_array($sys_purview, $value) ) {
+            $has_power = true;
+            break;
+        }
     }
+    return $has_power;
 }
 
 /**
@@ -140,7 +143,7 @@ function show_system_message($msg, $links = array(), $time = 5)
     }
     assign('time', $time);
     assign('page_title', '系统信息');
-    $smarty->display('message.phtml');
+    $smarty->display('public/message.phtml');
     exit;
 }
 
@@ -254,4 +257,115 @@ function backup($tables = null)
     fclose($handler);
 
     return $file_name;
+}
+
+/**
+ * 检测管理员是否已登陆
+ * @author 王仁欢
+ * @date 2015-08-05
+ * @return bool
+ */
+function check_admin_login()
+{
+    if(isset($_SESSION['purview']) && isset($_SESSION['account']))
+    {
+        return true;
+    } else {
+       return false;
+    }
+}
+
+/**
+ * 重定向
+ * @param $url
+ * @author 王仁欢
+ * @date 2015-08-05
+ * @return void
+ */
+function redirect($url) {
+    header('Location:'.$url);
+    exit;
+}
+
+/**
+ * 后台文件初始化，检查是否已登陆，根据权限生成菜单，assign通用信息
+ * @author 王仁欢
+ * @date 2015-08-05
+ * @return void
+ */
+function back_base_init() {
+    //是否已登陆
+    if( !check_admin_login() ) {
+        show_system_message('请先登陆', array(array('link' => 'index.php', 'alt' => '登陆')));
+        exit;
+    }
+
+    $activeNav = get_active_nav();
+    $realMenus = create_menu();
+    if( $activeNav != 'main.php') {
+        $is_main = false;
+    } else {
+        $is_main = true;
+    }
+    global $menus;
+    $menuMark = array();
+    foreach( $menus as $key => $menu ) {
+        if( $activeNav == $menu['url'] ) {
+            $menuMark['name'] = $realMenus[$menu['parent']]['key'];
+            $menuMark['count'] = $realMenus[$menu['parent']]['count'];
+            break;
+        }
+    }
+//    var_dump($realMenus);exit;
+
+    assign('menuMark', $menuMark);
+
+    assign('is_main', $is_main);
+    assign('activeNav', $activeNav);
+    assign('pageTitle', '磐石CMS-管理后台');
+    assign('currentAdmin', $_SESSION['name']);
+}
+
+
+/**
+ * 生成后台菜单
+ * @author 王仁欢
+ * @date 2015-08-05
+ * @return mixed
+ */
+function create_menu() {
+    global $menus;
+    global $topMenus;
+    $purview = $_SESSION['purview'];
+    $purview = json_decode($purview);
+//    $menu = array();
+    foreach($purview as $key => $value) {
+        if( count($value) > 0 && isset($menus[$key])) {
+            $menu = $menus[$key];
+            $temp = $menus[$key]['parent'];//menu_nav
+            if( isset( $topMenu[$temp]) ) {//exists
+                $topMenu[$temp]['count']++;
+                $topMenu[$temp]['children'][] = $menu;
+            } else {
+                $topMenu[$temp] = $topMenus[$temp];
+                $topMenu[$temp]['key'] = $temp;
+                $topMenu[$temp]['url'] = $menu['url'];
+                $topMenu[$temp]['count'] = 1;
+                $topMenu[$temp]['children'][] = $menu;
+            }
+        }
+    }
+    assign('menus', $topMenu);
+    return $topMenu;
+}
+
+/**
+ * @return string 当前文件名
+ * @author 王仁欢
+ *
+ */
+function get_active_nav() {
+    $url = $_SERVER['PHP_SELF'];
+    $filename= substr( $url , strrpos($url , '/')+1 );
+    return $filename;
 }
