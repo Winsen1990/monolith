@@ -197,7 +197,7 @@ $(document).ready(function() {
             },
             menuUrl: {
                 required: true,
-                url: true
+                //url: true
             },
             menuSort:{
                 number: true
@@ -211,7 +211,7 @@ $(document).ready(function() {
             },
             menuUrl: {
                 required: "菜单链接不能为空！",
-                url: "请输入合法的网址！"
+                //url: "请输入合法的网址！"
             },
             menuSort: {
                 number: "请输入合法的数字！"
