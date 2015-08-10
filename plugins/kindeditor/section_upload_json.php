@@ -18,7 +18,7 @@ $save_path = $php_path . '../../upload/';
 $save_url = $php_url . '../../upload/';
 //定义允许上传的文件扩展名，只允许上传图片
 $ext_arr = array(
-    'image' => array('gif', 'jpg', 'jpeg', 'png', 'bmp'),
+    'image' => array('gif', 'jpg', 'jpeg', 'png'),
     //'flash' => array('swf', 'flv'),
     //'media' => array('swf', 'flv', 'mp3', 'wav', 'wma', 'wmv', 'mid', 'avi', 'mpg', 'asf', 'rm', 'rmvb'),
     //'file' => array('doc', 'docx', 'xls', 'xlsx', 'ppt', 'htm', 'html', 'txt', 'zip', 'rar', 'gz', 'bz2'),
@@ -123,6 +123,24 @@ if (empty($_FILES) === false) {
         alert("上传文件失败。");
     }
     @chmod($file_path, 0644);
+    //创建缩略图
+
+    $sthumb_width = intval($config['sthumb_width']);
+    $sthumb_height = intval($config['sthumb_height']);
+
+    $sthumb_width = ( 0 >= $sthumb_width ) ? null : $sthumb_width;
+    $sthumb_height = ( 0 >= $sthumb_height ) ? null : $sthumb_height;
+
+    if( $sthumb_width && $sthumb_height ) {
+        create_thumb($file_path, $file_ext, $sthumb_width, $sthumb_height);
+    } else if( empty($sthumb_width) && $sthumb_height) {
+        create_thumb($file_path, $file_ext, null, $sthumb_height);
+    } else if( $sthumb_width && empty($sthumb_height) ) {
+        create_thumb($file_path, $file_ext, $sthumb_width );
+    } else {
+        create_thumb($file_path, $file_ext);
+    }
+
     $file_url = $save_url . $new_file_name;
 
     header('Content-type: text/html; charset=UTF-8');
@@ -139,7 +157,7 @@ function alert($msg) {
 }
 
 
-function create_section_thumb($filename, $type, $max_width, $max_height) {
+function create_thumb($filename, $type, $max_width = 75, $max_height = 75) {
     //文件保存目录路径
     $save_path = ROOT_PATH.'upload/';
     //文件保存目录URL
@@ -150,19 +168,19 @@ function create_section_thumb($filename, $type, $max_width, $max_height) {
     $im = null;
     switch($type) {
         case 'jpg':
-            $im = imagecreatefromjpeg(ROOT_PATH . $filename);
+            $im = imagecreatefromjpeg($filename);
             break;
         case 'jpeg':
-            $im = imagecreatefromjpeg(ROOT_PATH . $filename);
+            $im = imagecreatefromjpeg($filename);
             break;
         case 'png':
-            $im = imagecreatefrompng(ROOT_PATH . $filename);
+            $im = imagecreatefrompng($filename);
             break;
         case 'gif':
-            $im = imagecreatefromgif(ROOT_PATH . $filename);
+            $im = imagecreatefromgif($filename);
             break;
         default:
-            $im = imagecreatefromjpeg(ROOT_PATH . $filename);
+            $im = imagecreatefromjpeg($filename);
             break;
     }
     $pic_width = imagesx($im);
@@ -225,30 +243,36 @@ function create_section_thumb($filename, $type, $max_width, $max_height) {
     $ymd = date("Ymd");
     $save_path .= $ymd . "/";
     $save_url .= $ymd . "/";
-    if (!file_exists($save_path)) {
+    if ( !file_exists($save_path) ) {
         mkdir($save_path);
     }
 
-    $file_path = $save_path . $filename;
+    $temp = explode('/', $filename);
+    $temp_length = count($temp);
+
+    $file_path = $save_path . $temp[$temp_length - 1];
     //写入缩略图文件
     switch($type) {
         case 'jpg':
-            imagejpeg($new_im, $file_path);
+            $result = imagejpeg($new_im, $file_path);
             break;
         case 'jpeg':
-            imagejpeg($new_im, $file_path);
+            $result = imagejpeg($new_im, $file_path);
             break;
         case 'png':
-            imagepng($new_im, $file_path);
+            $result = imagepng($new_im, $file_path);
             break;
         case 'gif':
-            imagegif($new_im, $file_path);
+            $result = imagegif($new_im, $file_path);
             break;
         default:
-            imagejpeg($new_im, $file_path);
+            $result = imagejpeg($new_im, $file_path);
             break;
     }
-    return $save_url . $filename;
+    if( !$result ) {
+        alert('生成缩略图发生错误');
+    }
+    return $save_url . $temp[$temp_length - 1];
 }
 
 
