@@ -5,6 +5,58 @@
  * @date 2015-08-05
  * @version 1.0.0
  */
+global $purview;
+$purview = array(
+    'pur_sysconf' => array(
+        'pur_sysconf_add',
+        'pur_sysconf_view',
+        'pur_sysconf_edit',
+        'pur_sysconf_del',
+    ),
+    'pur_nav' => array(
+        'pur_nav_add',
+        'pur_nav_view',
+        'pur_nav_edit',
+        'pur_nav_del',
+    ),
+    'pur_section' => array(
+        'pur_section_add',
+        'pur_section_view',
+        'pur_section_edit',
+        'pur_section_del',
+    ),
+    'pur_content' => array(
+        'pur_content_add',
+        'pur_content_view',
+        'pur_content_edit',
+        'pur_content_del',
+    ),
+    'pur_admin' => array(
+        'pur_admin_add',
+        'pur_admin_view',
+        'pur_admin_edit',
+        'pur_admin_del',
+    ),
+    'pur_role' => array(
+        'pur_role_add',
+        'pur_role_view',
+        'pur_role_edit',
+        'pur_role_del',
+    ),
+    'pur_self' => array(
+        'pur_info_edit',
+        'pur_passwd_edit',
+    ),
+    'pur_sitemap' => array(
+        'pur_sitemap_edit',
+    ),
+    //模板控制
+    'pur_template' => array(
+        'pur_template_view',
+        'pur_template_apply',
+    )
+);
+
 global $L_purview;
 $L_purview = array(
     'pur_sysconf' => '系统设置',
