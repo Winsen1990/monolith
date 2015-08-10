@@ -57,7 +57,9 @@ $sql[] = 'create table if not exists '.$db->table('friend_link').' (
     `url` varchar(255) not null,
     `img` varchar(255),
     `type` varchar(255) not null default \'text\',
-    `no_followed` tinyint(1) not null default \'0\'
+    `no_followed` tinyint(1) not null default \'0\',
+    `name` varchar(255) not null,
+    `order_view` int not null default \'50\'
 ) default charset=utf8;';
 
 $table[] = '站点参数';
