@@ -369,3 +369,59 @@ function get_active_nav() {
     $filename= substr( $url , strrpos($url , '/')+1 );
     return $filename;
 }
+
+/**
+ * 生成分页
+ * @param $page 当前页
+ * @param $total_page   总页数
+ * @param $total    记录总数
+ * @author 王仁欢
+ * @return void
+ *
+ */
+function create_pager($page, $total_page, $total) {
+    $show_page = array();
+    if( $page == 1 ) {
+        for($i = 1; $i <= $total_page && $i <= 3; $i++) {
+            $show_page[] = $i;
+        }
+        $go_first = false;  //首页
+        $has_prev = false;  //上一页
+        $has_many_prev = false; //前页省略号
+        $has_next = ($total_page > 1) ? true : false;    //下一页
+        $has_many_next = ($total_page > 3) ? true : false;   //后页省略号
+        $go_last = ($total_page > 1) ? true : false; //末页
+    } else if( $page == $total_page ) {   //必然不是第一页
+        $i = ($total_page < 3) ? $page - 1 : $page - 2;
+        for( ; $i <= $total_page; $i++ ) {
+            $show_page[] = $i;
+        }
+        $go_first = true;
+        $has_prev = true;
+        $has_many_prev = ($total_page > 3) ? true : false;
+        $has_next = false;
+        $has_many_next = false;
+        $go_last = false;
+    } else {
+        for($i = $page - 1; $i <= $total_page && $i <= $page + 1; $i++ ) {
+            $show_page[] = $i;
+        }
+        $go_first = true;
+        $has_prev = true;
+        $has_many_prev = ($page > 3) ? true : false;
+        $has_many_next = ( ($total_page - $page) > 2 ) ? true : false;
+        $has_next = true;
+        $go_last = true;
+    }
+    assign('show_page', $show_page);
+    assign('go_first', $go_first);
+    assign('has_prev', $has_prev);
+    assign('has_many_prev', $has_many_prev);
+    assign('has_many_next', $has_many_next);
+    assign('has_next', $has_next);
+    assign('go_last', $go_last);
+
+    assign('page', $page);
+    assign('total', $total);
+    assign('totalPage', $total_page );
+}

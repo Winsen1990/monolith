@@ -54,7 +54,14 @@ $purview = array(
     'pur_template' => array(
         'pur_template_view',
         'pur_template_apply',
-    )
+    ),
+    //友情链接
+    'pur_friend' => array(
+        'pur_friend_view',
+        'pur_friend_add',
+        'pur_friend_edit',
+        'pur_friend_del',
+    ),
 );
 
 global $L_purview;
@@ -133,8 +140,8 @@ $menus = array(
     //array('url' => 'main.php', 'title' => '首页', 'icon' => 'fa fa-home'),
     'pur_friend' => array('url'=>'friend.php', 'title'=>'友情链接管理', 'parent' => 'menu_site'),
     'pur_nav' => array('url'=>'nav.php', 'title'=>'导航栏管理', 'parent' => 'menu_site'),
-    'pur_content' => array('url'=>'content.php', 'title'=>'资讯管理', 'parent' => 'menu_content'),
-    'pur_section' => array('url'=>'section.php', 'title'=>'资讯分类管理', 'parent' => 'menu_content'),
+    'pur_content' => array('url'=>'content.php', 'title'=>'内容管理', 'parent' => 'menu_content'),
+    'pur_section' => array('url'=>'section.php', 'title'=>'栏目管理', 'parent' => 'menu_content'),
     'pur_admin' => array('url'=>'admin.php', 'title'=>'管理员管理', 'parent' => 'menu_admin'),
     'pur_role' => array('url'=>'role.php', 'title'=>'管理员角色管理', 'parent' => 'menu_admin'),
     'pur_sysconf' => array('url'=>'sysconf.php', 'title'=>'系统参数管理', 'parent' => 'menu_site'),

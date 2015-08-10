@@ -29,56 +29,205 @@ if( 'add' == $opera ) {
         exit;
     }
 
-    $name = getPOST('articleCatName');
+    $name = trim(getPOST('articleCatName'));
     $parent_id = getPOST('parentId');
-    $keywords = getPOST('keywords');
-    $description = getPOST('description');
-    $order_view = 0;
+    $keywords = trim(getPOST('keywords'));
+    $description = trim(getPOST('description'));
+    $order_view = intval(getPOST('order_view'));
     $path = '';
-    $original = getPOST('img');
+    $original = trim(getPOST('img'));
+    $thumb = '';
 
 
-    if('' == $name)
-    {
-        showSystemMessage('分类名称不能为空', array());
+    if('' == $name) {
+        show_system_message('栏目名称不能为空', array());
         exit;
     } else {
         $name = $db->escape(htmlspecialchars($name));
     }
 
-    if('' == $keywords)
-    {
-        showSystemMessage('出于SEO考虑，请务必填写关键词', array());
+    if('' == $keywords) {
+        show_system_message('出于SEO考虑，请务必填写关键词', array());
         exit;
     } else {
         $keywords = $db->escape(htmlspecialchars($keywords));
     }
 
-    if('' == $description)
-    {
-        showSystemMessage('出于SEO考虑，请务必填写简要介绍', array());
+    if('' == $description) {
+        show_system_message('出于SEO考虑，请务必填写简要介绍', array());
         exit;
     } else {
         $description = $db->escape(htmlspecialchars($description));
     }
 
-    if( '' == $img ) {
+    if( '' == $original ) {
 
     } else {
-        if( !file_exists(realpath('../'.$img)) ) {
-            showSystemMessage('图片不存在', array());
+        $original = $db->escape(htmlspecialchars($img));
+        if( file_exists('../'.$original) ) {
+            $thumb = str_replace('image', 'thumb', $original);
+        } else {
+            $thumb = '';
+        }
+
+    }
+
+    $parent_id = intval($parent_id);
+    if( 0 > $parent_id ) {
+        show_system_message('参数错误', array());
+        exit;
+    }
+
+    $data = array(
+        'section_name' => $name,
+        'parent_id' => $parent_id,
+        'path' => '',
+        'keywords' => $keywords,
+        'description' => $description,
+        'order_view' => $order_view,
+        'thumb' => $thumb,
+        'original' => $original,
+    );
+
+    if( $db->autoInsert('section', array($data)) ) {
+        $id = $db->get_last_id();
+        $path = $id.',';
+        if( 0 < $parent_id ) {
+            $get_parent_path = 'select `path` from `'.DB_PREFIX.'section` where `id`='.$parent_id;
+            if( $parent_path = $db->fetchRow($get_parent_path) ) {
+                $path = $parent_path['path'].','.$path;
+            }
+        }
+
+        $update_section = 'update `'.DB_PREFIX.'section` set `path`=\''.$path.'\' where `id`='.$id.' limit 1';
+        if( $db->update($update_section) ) {
+            $links = array(
+                array('alt'=>'查看栏目', 'link'=>'section.php?act=list'),
+                array('alt'=>'继续添加栏目', 'link'=>'section.php?act=add')
+            );
+            show_system_message('添加栏目成功', $links);
             exit;
         } else {
-            $img = $db->escape(htmlspecialchars($img));
+            show_system_message('更新栏目失败', array());
+            exit;
+        }
+    } else {
+        show_system_message('系统繁忙，请稍后再试', array());
+        exit;
+    }
+
+}
+
+//编辑栏目
+if( 'edit' == $opera ) {
+
+    if( !check_purview('pur_section_edit', $_SESSION['purview']) ) {
+        show_system_message('权限不足', array());
+        exit;
+    }
+    $id = getPOST('id');
+    $id = intval($id);
+
+    if( 0 >= $id ) {
+        show_system_message('参数错误', array());
+        exit;
+    }
+
+    $get_section = 'select * from `'.DB_PREFIX.'section` where `id`='.$id.' limit 1';
+    $section = $db->fetchRow($get_section);
+
+    if( empty($section) ) {
+        show_system_message('栏目不存在', array());
+        exit;
+    }
+
+    $name = trim(getPOST('articleCatName'));
+    $parent_id = getPOST('parentId');
+    $keywords = trim(getPOST('keywords'));
+    $description = trim(getPOST('description'));
+    $order_view = intval(getPOST('order_view'));
+    $path = '';
+    $original = trim(getPOST('img'));
+    $thumb = '';
+
+
+    if('' == $name) {
+        show_system_message('栏目名称不能为空', array());
+        exit;
+    } else {
+        $name = $db->escape(htmlspecialchars($name));
+    }
+
+    if('' == $keywords) {
+        show_system_message('出于SEO考虑，请务必填写关键词', array());
+        exit;
+    } else {
+        $keywords = $db->escape(htmlspecialchars($keywords));
+    }
+
+    if('' == $description) {
+        show_system_message('出于SEO考虑，请务必填写简要介绍', array());
+        exit;
+    } else {
+        $description = $db->escape(htmlspecialchars($description));
+    }
+
+    if( '' == $original ) {
+
+    } else {
+        $original = $db->escape(htmlspecialchars($original));
+        if( file_exists('../'.$original) ) {
+            $thumb = str_replace('image', 'thumb', $original);
+        } else {
+            $thumb = '';
+        }
+
+    }
+
+    $parent_id = intval($parent_id);
+    if( 0 > $parent_id ) {
+        show_system_message('参数错误', array());
+        exit;
+    }
+
+    if( 0 < $parent_id ) {
+        $get_parent_path = 'select `path` from `'.DB_PREFIX.'section` where `id`='.$parent_id;
+        if( $parent_path = $db->fetchRow($get_parent_path) ) {
+            $path = $parent_path['path'].','.$id.',';
         }
     }
 
-    $parentId = intval($parentId);
-    if(0 > $parentId)
-    {
-        showSystemMessage('参数错误', array());
+
+
+    $data = array(
+        'section_name' => $name,
+        'parent_id' => $parent_id,
+        'path' => $path,
+        'keywords' => $keywords,
+        'description' => $description,
+        'order_view' => $order_view,
+        'thumb' => $thumb,
+        'original' => $original,
+    );
+
+    foreach( $data as $key => $value ) {
+        if( $value == '' ) {
+            unset($data[$key]);
+        }
+    }
+
+    $where = 'id = '.$id;
+    $order = '';
+    $limit = '1';
+
+    if( $db->autoUpdate('section', $data, $where, $order, $limit) ) {
+        show_system_message('栏目更新成功', array());
+        exit;
+    } else {
+        show_system_message('系统繁忙，请稍后重试', array());
         exit;
     }
+
 
 }
 
@@ -94,7 +243,7 @@ if( 'view' == $act ) {
         exit;
     }
 
-    $get_section_list = 'select * from '.$db->table('section').' where 1 order by `path` ASC';
+    $get_section_list = 'select * from '.$db->table('section').' where 1  order by `order_view` ASC,`path` ASC';
     $section_list = $db->fetchAll($get_section_list);
 
     foreach($section_list as $key => $section) {
@@ -142,6 +291,15 @@ if( 'add' == $act ) {
     }
 
     assign('sectionList', $section_list);
+
+    $get_configs = 'select * from '.$db->table('sysconf').' where 1';
+    $configs = $db->fetchAll($get_configs);
+
+    foreach( $configs as $config ) {
+        $target[$config['key']] = $config['value'];
+    }
+
+    assign('configs', $target);
 }
 
 //编辑栏目
@@ -158,8 +316,8 @@ if( 'edit' == $act ) {
         exit;
     }
 
-    $get_section = 'select `id` from `'.DB_PREFIX.'section` where `parent_id`='.$id;
-    $section = $db->fetchAll($get_section);
+    $get_section = 'select * from `'.DB_PREFIX.'section` where `id`='.$id.' limit 1';
+    $section = $db->fetchRow($get_section);
 
     if( empty($section) ) {
         show_system_message('栏目不存在', array());
@@ -167,6 +325,35 @@ if( 'edit' == $act ) {
     }
 
     assign('section', $section);
+
+    $get_section_list = 'select * from '.$db->table('section').' where `id` <> '.$id.'  order by `path` ASC';
+    $section_list = $db->fetchAll($get_section_list);
+
+    foreach($section_list as $key => $section) {
+        $count = count(explode(',', $section['path']));
+        if($count > 1)
+        {
+            $temp = '|--'.$section['section_name'];
+            while($count--)
+            {
+                $temp = '&nbsp;&nbsp;'.$temp;
+            }
+
+            $section['section_name'] = $temp;
+            $section_list[$key] = $section;
+        }
+    }
+
+    assign('sectionList', $section_list);
+
+    $get_configs = 'select * from '.$db->table('sysconf').' where 1';
+    $configs = $db->fetchAll($get_configs);
+
+    foreach( $configs as $config ) {
+        $target[$config['key']] = $config['value'];
+    }
+
+    assign('configs', $target);
 
 }
 

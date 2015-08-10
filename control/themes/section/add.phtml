@@ -60,7 +60,6 @@
 <link rel="stylesheet" type="text/css" href="../plugins/kindeditor/themes/default/default.css"/>
 <script type="text/javascript" src="../plugins/kindeditor/kindeditor-all-min.js"></script>
 <script type="text/javascript">
-    {literal}
     KindEditor.ready(function(K)
     {
         var editor = K.editor({
@@ -74,10 +73,12 @@
                     imageUrl : '',
                     clickFn : function(url, title, width, height, border, align) {
                         if( !width ) {
-                            width = 187 + 'px';
+                            width = '{$configs.sthumb_width}';
+                            width = (width == '') ? '75px' : width + 'px'
                         }
                         if( !height ) {
-                            height = 140 + 'px';
+                            height = '{$configs.sthumb_height}';
+                            height = (height == '') ? '75px' : height + 'px'
                         }
 
                         K('#img').val(url);
@@ -93,7 +94,6 @@
         });
 //    prettyPrint();
     });
-    {/literal}
 </script>
 <!-- END content -->
 {include file="library/footer.lbi"}
