@@ -1,8 +1,9 @@
-
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <!-- sidebar -->
 <div id="sidebar">
     <div id="sidebar-wrapper">
-        <ul id="main-nav">  <!-- main Menu -->
+        <ul id="main-nav">
+            <!-- main Menu -->
             <li class="coin_1">
                 <a href="main.php" class="nav-top-item">
                     <em class="icon">&#xe606;</em>首页

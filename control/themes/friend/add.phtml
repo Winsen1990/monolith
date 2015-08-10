@@ -1,0 +1,102 @@
+{include file="library/header.lbi"}
+<body>
+{include file="library/navbar.lbi"}
+{include file="library/sidebar.lbi"}
+<script type="text/javascript" src="js/ajaxfileupload.js"></script>
+<!-- content -->
+<div id="content">
+    <div class="content-title">
+        <h5 class="pull-left">{$subTitle}</h5>
+        <div class="clear"></div>
+    </div>
+    <div class="sysconf-main">
+        <form id="friend-form" name="friend-form" method="post">
+            <fieldset>
+                <p class="clear">
+                    <label class="l-title">链接名称:</label>
+                    <input class="text-input w300" type="text" id="name" name="name" placeholder="请输入链接名称"/>
+                </p>
+                <p class="clear">
+                    <label class="l-title">链接排序:</label>
+                    <input class="text-input w300" type="number" id="order_view" name="order_view" placeholder="请输入排序" value="50"/>
+                </p>
+                <p class="clear">
+                    <label class="l-title">权重传递:</label>
+                    <input type="radio" name="no_followed" value="1" checked="checked"/><em>否</em>&nbsp;
+                    <input type="radio" name="no_followed" value="0"/><em>是</em>
+                </p>
+                <p class="clear">
+                    <label class="l-title">链接类型:</label>
+                    <select name="type" class="w150" onchange="select_link_type(this.value);">
+                        <option value="text">文字链接</option>
+                        <option value="img">图片链接</option>
+                    </select>
+                </p>
+                <p class="clear" style="display: none" id="img-input">
+                    <label class="l-title">链接图片:</label>
+                    <input type="hidden" name="img" value="" id="img"/>
+                    <input type="file" name="upload" id="upload"/><input type="button" class="btn" name="upload_btn" id="upload_btn" value="上传"/>
+                    <img src="about:blank" id="upload-img"/>
+                </p>
+                <p>
+                    <label class="l-title"></label>
+                    <input name="submit" class="btn btn-primary" type="submit" value="新增"/>&nbsp;
+                    <a href="javascript:history.go(-1);" class="btn btn-primary">返回</a>
+                </p>                
+            </fieldset>
+        </form> 
+    </div>
+</div>
+<script type="text/javascript">
+function select_link_type(type)
+{
+    if(type == "img")
+    {
+        $("#img-input").show();
+    } else {
+        $("#img-input").hide();
+    }
+}
+
+function ajaxFileUpload()
+{
+	$("#loading").ajaxStart(function(){
+		$(this).show();
+	}).ajaxComplete(function(){
+		$(this).hide();
+	});
+
+	$.ajaxFileUpload({
+		url:'doajaxfileupload.php',
+		secureuri:false,
+		fileElementId:'upload',
+		dataType: 'json',
+		data:{ name:'logan', id:'id' },
+		success: function (data, status) {
+			if(typeof(data.error) != 'undefined') {
+				if(data.error != '') {
+					alert(data.error);
+				} else {
+                    alert(data.msg);
+                    $("#upload-img").attr("src", data.file);
+				}
+			}
+		},
+
+		error: function (data, status, e) {
+			alert(e);
+		}
+	});
+		
+	return false;
+}
+
+$(function() {
+    $("#upload_btn").click(ajaxFileUpload);
+});
+</script>
+<!-- END content -->
+
+{include file="library/footer.lbi"}
+</body>
+</html>

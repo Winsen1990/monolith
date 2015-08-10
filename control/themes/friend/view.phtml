@@ -1,0 +1,90 @@
+{include file="library/header.lbi"}
+<body>
+{include file="library/navbar.lbi"}
+{include file="library/sidebar.lbi"}
+<!-- content -->
+<div id="content">
+    <div class="content-title">
+        <h5 class="pull-left">{$subTitle}</h5>
+        <div class="pull-right"><a class="btn btn-primary" href="?act=add">添加友情链接</a></div>
+        <div class="clear"></div>
+    </div>
+    <div class="friend_list-main">
+        <ul class="tabs">
+            <li class="active"><a href="#tab1">文字型链接</a></li>
+            <li><a href="#tab2">图片型链接</a></li>
+        </ul>
+        <div class="tab_container">
+            <div id="tab1" class="tab_content" style="display: block; ">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>名称</th>
+                        <th>URL</th>
+                        <th>排序(升序排列)</th>
+                        <th>权重传递</th>
+                        <th class="text-right">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {if isset($friend_list.text)}
+                    {foreach from=$friend_list.text item=n}
+                    <tr>
+                        <td>{$n.name}</td>
+                        <td>{$n.url}</td>
+                        <td>{$n.order_view}</td>
+                        <td>{if $n.no_followed eq 1}否{else}是{/if}</td>
+                        <td class="text-right"><a href="?act=edit&id={$n.id}">编辑</a> | <a href="?act=delete&id={$n.id}">删除</a></td>
+                    </tr>
+                    {/foreach}
+                    {else}
+                    <tr>
+                        <td style="padding: 50px 0" colspan="6" align="center">您还没有友情链接，立即点击 “<a href="?act=add" target="_blank">这里</a>” 添加友情链接！</td>
+                    </tr>
+                    {/if}
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="tab2" class="tab_content" style="display: none; ">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>名称</th>
+                        <th>URL</th>
+                        <th>排序(升序排列)</th>
+                        <th>链接图片</th>
+                        <th>权重传递</th>
+                        <th class="text-right">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {if isset($friend_list.img)}
+                    {foreach from=$friend_list.img item=n}
+                    {if $n.position eq 'middle'}
+                    {$exists = true}
+                    <tr>
+                        <td>{$n.name}</td>
+                        <td>{$n.url}</td>
+                        <td>{$n.order_view}</td>
+                        <td><img src="../{$n.img}" class="friend-link-img"/></td>
+                        <td>{if $n.no_followed eq 1}否{else}是{/if}</td>
+                        <td class="text-right"><a href="?act=edit&id={$n.id}">编辑</a> | <a href="?act=delete&id={$n.id}">删除</a></td>
+                    </tr>
+                    {/if}
+                    {/foreach}
+                    {else}
+                    <tr>
+                        <td style="padding: 50px 0" colspan="6" align="center">您还没有友情链接，立即点击 “<a href="?act=add" target="_blank">这里</a>” 添加友情链接！</td>
+                    </tr>
+                    {/if}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END content -->
+{include file="library/footer.lbi"}
+</body>
+</html>
