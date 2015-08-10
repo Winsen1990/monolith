@@ -197,7 +197,7 @@ $(document).ready(function() {
             },
             menuUrl: {
                 required: true,
-                url: true
+                //url: true
             },
             menuSort:{
                 number: true
@@ -211,7 +211,7 @@ $(document).ready(function() {
             },
             menuUrl: {
                 required: "菜单链接不能为空！",
-                url: "请输入合法的网址！"
+                //url: "请输入合法的网址！"
             },
             menuSort: {
                 number: "请输入合法的数字！"
@@ -223,7 +223,7 @@ $(document).ready(function() {
 
 /* 添加和编辑资讯分类表单验证 */
     $(document).ready(function() {
-        var validator = $("#articleCatForm").validate({
+        var validator = $("#sectionForm").validate({
             rules: {
                 articleCatName: {
                     required: true,
@@ -234,11 +234,14 @@ $(document).ready(function() {
                 },
                 description:{
                     maxlength: 140
+                },
+                order_view: {
+                    number: true
                 }
             },
             messages: {
                 articleCatName: {
-                    required: "资讯分类名称不能为空！",
+                    required: "栏目名称不能为空！",
                     maxlength: jQuery.validator.format("请输入一个长度最多是 {0} 的字符串"),
                     remote: jQuery.validator.format("已经输入长度 {0}")
                 },
@@ -247,6 +250,9 @@ $(document).ready(function() {
                 },
                 description: {
                     maxlength: jQuery.validator.format("请输入一个长度最多是 {0} 的字符串")
+                },
+                order_view: {
+                    number: "请输入合法的数字！"
                 }
             }
         });
@@ -255,7 +261,7 @@ $(document).ready(function() {
 
 /* 添加和编辑用户表单验证 */
 $(document).ready(function() {
-    var validator = $("#adminUserForm").validate({
+    var validator = $("#adminForm").validate({
         rules: {
             userName: {
                 required: true,
@@ -313,7 +319,7 @@ $(document).ready(function() {
 
 /* 添加和编辑用户组表单验证 */
 $(document).ready(function() {
-    var validator = $("#adminGroupForm").validate({
+    var validator = $("#roleForm").validate({
         rules: {
             name: {
                 required: true,

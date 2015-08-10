@@ -12,8 +12,8 @@
     <div class="nav-main">
 
         <ul class="tabs">
-            <li class="active"><a href="#tab1">头部导航</a></li>
-            <li><a href="#tab2">侧栏导航</a></li>
+            <li class="active"><a href="#tab1">顶部导航</a></li>
+            <li><a href="#tab2">中部导航</a></li>
             <li><a href="#tab3">底部导航</a></li>
         </ul>
         <div class="tab_container">
@@ -25,7 +25,7 @@
                         <th>URL</th>
                         <th>排序(升序排列)</th>
                         <th>页面位置</th>
-                        <th>是否显示</th>
+<!--                        <th>是否显示</th>-->
                         <th class="text-right">操作</th>
                     </tr>
                     </thead>
@@ -37,12 +37,12 @@
                     <tr>
                         <td>{$n.name}</td>
                         <td>{$n.url}</td>
-                        <td>{$n.orderView}</td>
+                        <td>{$n.order_view}</td>
                         <td>{$n.position}</td>
                         {if $n.isShow eq 1}
-                        <td>是</td>
+<!--                        <td>是</td>-->
                         {else}
-                        <td>否</td>
+<!--                        <td>否</td>-->
                         {/if}
                         <td class="text-right"><a href="?act=edit&id={$n.id}">编辑</a> | <a href="?act=delete&id={$n.id}">删除</a></td>
                     </tr>
@@ -67,7 +67,7 @@
                         <th>URL</th>
                         <th>排序(升序排列)</th>
                         <th>页面位置</th>
-                        <th>是否显示</th>
+<!--                        <th>是否显示</th>-->
                         <th class="text-right">操作</th>
                     </tr>
                     </thead>
@@ -79,12 +79,12 @@
                     <tr>
                         <td>{$n.name}</td>
                         <td>{$n.url}</td>
-                        <td>{$n.orderView}</td>
+                        <td>{$n.order_view}</td>
                         <td>{$n.position}</td>
                         {if $n.isShow eq 1}
-                        <td>是</td>
+<!--                        <td>是</td>-->
                         {else}
-                        <td>否</td>
+<!--                        <td>否</td>-->
                         {/if}
                         <td class="text-right"><a href="?act=edit&id={$n.id}">编辑</a> | <a href="?act=delete&id={$n.id}">删除</a></td>
                     </tr>
@@ -107,7 +107,7 @@
                         <th>URL</th>
                         <th>排序(升序排列)</th>
                         <th>页面位置</th>
-                        <th>是否显示</th>
+<!--                        <th>是否显示</th>-->
                         <th class="text-right">操作</th>
                     </tr>
                     </thead>
@@ -119,12 +119,12 @@
                     <tr>
                         <td>{$n.name}</td>
                         <td>{$n.url}</td>
-                        <td>{$n.orderView}</td>
+                        <td>{$n.order_view}</td>
                         <td>{$n.position}</td>
                         {if $n.isShow eq 1}
-                        <td>是</td>
+<!--                        <td>是</td>-->
                         {else}
-                        <td>否</td>
+<!--                        <td>否</td>-->
                         {/if}
                         <td class="text-right"><a href="?act=edit&id={$n.id}">编辑</a> | <a href="?act=delete&id={$n.id}">删除</a></td>
                     </tr>

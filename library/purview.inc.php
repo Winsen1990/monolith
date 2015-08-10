@@ -83,7 +83,7 @@ $menus = array(
     'pur_nav' => array('url'=>'nav.php', 'title'=>'导航栏管理', 'parent' => 'menu_site'),
     'pur_content' => array('url'=>'content.php', 'title'=>'资讯管理', 'parent' => 'menu_content'),
     'pur_section' => array('url'=>'section.php', 'title'=>'资讯分类管理', 'parent' => 'menu_content'),
-    'pur_admin' => array('url'=>'adminUser.php', 'title'=>'管理员管理', 'parent' => 'menu_admin'),
+    'pur_admin' => array('url'=>'admin.php', 'title'=>'管理员管理', 'parent' => 'menu_admin'),
     'pur_role' => array('url'=>'role.php', 'title'=>'管理员角色管理', 'parent' => 'menu_admin'),
     'pur_sysconf' => array('url'=>'sysconf.php', 'title'=>'系统参数管理', 'parent' => 'menu_site'),
     'pur_self' => array('url' => 'self.php', 'title' => '个人信息修改', 'parent' => 'menu_self'),
