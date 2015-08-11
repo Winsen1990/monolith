@@ -145,7 +145,7 @@ $menus = array(
     'pur_admin' => array('url'=>'admin.php', 'title'=>'管理员管理', 'parent' => 'menu_admin'),
     'pur_role' => array('url'=>'role.php', 'title'=>'管理员角色管理', 'parent' => 'menu_admin'),
     'pur_sysconf' => array('url'=>'sysconf.php', 'title'=>'系统参数管理', 'parent' => 'menu_site'),
-    'pur_self' => array('url' => 'self.php', 'title' => '个人信息修改', 'parent' => 'menu_self'),
+    'pur_self' => array('url' => 'profile.php', 'title' => '个人信息修改', 'parent' => 'menu_self'),
     'pur_passwd' => array('url' => 'password.php', 'title' => '修改密码', 'parent' => 'pur_self'),
     'pur_adpos' => array('url' => 'adpos.php', 'title' => '广告位置管理', 'parent' => 'menu_site'),
     'pur_ad' => array('url' => 'ad.php', 'title' => '广告管理', 'parent' => 'menu_site'),
