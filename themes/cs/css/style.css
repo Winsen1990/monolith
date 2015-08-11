@@ -229,7 +229,7 @@ a:hover{ text-decoration:none; color:#000;}
 .foot{width:980px;margin:0px auto;text-align:center;}
 .foot dl{width:399px;margin:0px auto 50px;height:117px;text-align:center;}
 .foot dl dd{float:left;line-height:80px;}
-.foot dl dt{float:left;padding-top:12px;}
+.foot dl dt{float:left;padding-top:0px;}
 .foot p{line-height:25px;font-size:14px;color:#fff;}
 
 .top{margin-top:23px;float:right}
@@ -296,20 +296,70 @@ a:hover{ text-decoration:none; color:#000;}
 .main_n .nright .pagelist ul li{float:left;padding-right:15px;}
 .main_n .nright .pagelist a{padding:2px;border:1px #ccc solid;}
 
+.reason {
+    background: url(../images/reason-bg.jpg) no-repeat;
+    position: relative;
+    overflow: hidden;
+    padding-top: 123px;
+}
 
+.reason-dl {
+    display: block;
+    font-size: 16px;
+    margin-top: 7px;
+    width: 400px;
+    background-color: rgb(255, 255, 255);
+    padding: 21px 15px 22px;
+}
 
+.reason-dl1 {
+  margin-left: 400px;
+  margin-top: 0px;
+}
 
+.reason-dl2 {
+  margin-left: 450px;
+}
 
+.reason-dl3 {
+  margin-left: 500px;
+  margin-top: 5px;
+}
 
+.reason-dl4 {
+  margin-left: 550px;
+}
 
+.reason-title {
+  font-size: 26px;
+  text-align: center;
+}
 
+.flow-title {
+  background: url(../images/flow-title-bg.png) no-repeat;
+  line-height: 60px;
+  font-size: 22px;
+  text-indent: 80px;
+  color: #54B4E2;
+}
 
+.flow {
+  margin: 40px 0;
+  font-size: 22px;
+  line-height: 54px;
+}
 
+.flow-step-1 {
+  background: url(../images/flow-1-bg.jpg) no-repeat right;
+}
 
+.flow-step-2 {
+  background: url(../images/flow-2-bg.jpg) no-repeat;
+  padding-left: 200px;
+  margin: 20px 0;
+}
 
-
-
-
-
-
-
+.flow-step-3 {
+  background: url(../images/flow-3-bg.jpg) no-repeat right;
+  padding-right: 200px;
+}

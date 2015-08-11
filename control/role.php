@@ -153,7 +153,6 @@ if( 'add' == $act ) {
     global $menus, $purview, $L_purview;
     assign('purviews', $purview);
     assign('purviewValue', $L_purview);
-    assign('menus', $menus);
 }
 
 if( 'edit' == $act ) {

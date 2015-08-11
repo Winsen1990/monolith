@@ -61,8 +61,6 @@
                     <tbody>
                     {if isset($friend_list.img)}
                     {foreach from=$friend_list.img item=n}
-                    {if $n.position eq 'middle'}
-                    {$exists = true}
                     <tr>
                         <td>{$n.name}</td>
                         <td>{$n.url}</td>
@@ -71,7 +69,6 @@
                         <td>{if $n.no_followed eq 1}否{else}是{/if}</td>
                         <td class="text-right"><a href="?act=edit&id={$n.id}">编辑</a> | <a href="?act=delete&id={$n.id}">删除</a></td>
                     </tr>
-                    {/if}
                     {/foreach}
                     {else}
                     <tr>

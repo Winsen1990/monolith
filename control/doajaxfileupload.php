@@ -2,7 +2,7 @@
 	$error = "";
 	$msg = "";
     $element = 'upload';
-    $save_path = '../upload/friend';
+    $save_path = './upload/friend';
     $filename = '';
 
 	if(!empty($_FILES[$element]['error'])) {
@@ -58,7 +58,7 @@
             $error = 'file type is not support';
         } else {
             $filename = basename($_FILES[$element]['name']);
-	        $file_ext = strtolower(substr($filename, strrpos($filename, '.') + 1));
+	        $file_ext = strtolower(substr('../'.$filename, strrpos($filename, '.') + 1));
             do
             {
                 $filename = $save_path.'/'.substr(time(), -1, 8).'.'.$file_ext;

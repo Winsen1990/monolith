@@ -20,9 +20,195 @@ $act = ( $act == '' ) ? 'view' : $act;
 
 $opera = check_action($operation, getPOST('opera'));
 
-//===========================================================================
+if('edit' == $opera)
+{
+    $response = array('error'=>1, 'msg'=>'', 'errmsg'=>array());
 
-if( 'view' == $act ) {
+    if(!check_purview('pur_friend_edit', $_SESSION['purview']))
+    {
+        $response['msg'] = '没有操作权限';
+        echo json_encode($response);
+        exit;
+    }
+
+    $eid = intval(getPOST('eid'));
+    $url = getPOST('url');
+    $img = getPOST('img');
+    $name = getPOST('name');
+    $type = getPOST('type');
+    $order_view = intval(getPOST('order_view'));
+    $no_followed = intval(getPOST('no_followed'));
+
+    if($eid <= 0)
+    {
+        $response['msg'] = '参数错误';
+    }
+
+    if($url == '')
+    {
+        $response['errmsg']['url'] = '-请输入url';
+    } else {
+        $url = $db->escape($url);
+    }
+
+    if($type != 'text' && $type != 'img')
+    {
+        $type = 'text';
+    } else {
+        $type = $db->escape($type);
+    }
+
+    switch($type)
+    {
+    case 'img' : 
+        if($img == '')
+        {
+            $response['errmsg']['img'] = '-请上传链接图片';
+        } else {
+            $img = $db->escape($img);
+        }
+        break;
+    default:
+        $img = '';
+        break;
+    }
+
+    if($name == '')
+    {
+        $response['errmsg']['name'] = '-请输入链接名称';
+    } else {
+        $name = $db->escape($name);
+    }
+
+    if($order_view <= 0)
+    {
+        $response['errmsg']['order_view'] = '-请填写大于0的整数';
+    }
+
+    if($no_followed <= 0)
+    {
+        $no_followed = 0;
+    } else {
+        $no_followed = 1;
+    }
+
+    if(count($response['errmsg']) == 0 && $response['msg'] == '')
+    {
+        $link_data = array(
+            'url' => $url,
+            'img' => $img,
+            'type' => $type,
+            'no_followed' => $no_followed,
+            'name' => $name,
+            'order_view' => $order_view
+        );
+
+        if($db->autoUpdate('friend_link', $link_data, '`id`='.$eid))
+        {
+            $response['msg'] = '修改友情链接成功';
+            $response['error'] = 0;
+        } else {
+            $response['msg'] = '系统繁忙，请稍后再试';
+        }
+    }
+
+    echo json_encode($response);
+    exit;
+}
+
+if('add' == $opera)
+{
+    $response = array('error'=>1, 'msg'=>'', 'errmsg'=>array());
+
+    if(!check_purview('pur_friend_add', $_SESSION['purview']))
+    {
+        $response['msg'] = '没有操作权限';
+        echo json_encode($response);
+        exit;
+    }
+
+    $url = getPOST('url');
+    $img = getPOST('img');
+    $name = getPOST('name');
+    $type = getPOST('type');
+    $order_view = intval(getPOST('order_view'));
+    $no_followed = intval(getPOST('no_followed'));
+
+    if($url == '')
+    {
+        $response['errmsg']['url'] = '-请输入url';
+    } else {
+        $url = $db->escape($url);
+    }
+
+    if($type != 'text' && $type != 'img')
+    {
+        $type = 'text';
+    } else {
+        $type = $db->escape($type);
+    }
+
+    switch($type)
+    {
+    case 'img' : 
+        if($img == '')
+        {
+            $response['errmsg']['img'] = '-请上传链接图片';
+        } else {
+            $img = $db->escape($img);
+        }
+        break;
+    default:
+        $img = '';
+        break;
+    }
+
+    if($name == '')
+    {
+        $response['errmsg']['name'] = '-请输入链接名称';
+    } else {
+        $name = $db->escape($name);
+    }
+
+    if($order_view <= 0)
+    {
+        $response['errmsg']['order_view'] = '-请填写大于0的整数';
+    }
+
+    if($no_followed <= 0)
+    {
+        $no_followed = 0;
+    } else {
+        $no_followed = 1;
+    }
+
+    if(count($response['errmsg']) == 0)
+    {
+        $link_data = array(
+            'url' => $url,
+            'img' => $img,
+            'type' => $type,
+            'no_followed' => $no_followed,
+            'name' => $name,
+            'order_view' => $order_view
+        );
+
+        if($db->autoInsert('friend_link', array($link_data)))
+        {
+            $response['msg'] = '新增友情链接成功';
+            $response['error'] = 0;
+        } else {
+            $response['msg'] = '系统繁忙，请稍后再试';
+        }
+    }
+
+    echo json_encode($response);
+    exit;
+}
+
+
+if('view' == $act)
+{
     if(!check_purview('pur_friend_view', $_SESSION['purview']))
     {
         show_system_message('权限不足', array());
@@ -48,6 +234,14 @@ if( 'view' == $act ) {
     assign('friend_list', $friend_list);
 }
 
+if('edit' == $act)
+{
+    $id = intval(getGET('id'));
+
+    $get_link = 'select `id`,`url`,`img`,`name`,`order_view`,`type`,`no_followed` from '.$db->table('friend_link').' where `id`='.$id;
+
+    assign('link', $db->fetchRow($get_link));
+}
 
 
 $template .= $act.'.phtml';

@@ -39,12 +39,7 @@
                         <td>{$n.url}</td>
                         <td>{$n.order_view}</td>
                         <td>{$n.position}</td>
-                        {if $n.isShow eq 1}
-<!--                        <td>是</td>-->
-                        {else}
-<!--                        <td>否</td>-->
-                        {/if}
-                        <td class="text-right"><a href="?act=edit&id={$n.id}">编辑</a> | <a href="?act=delete&id={$n.id}">删除</a></td>
+                        <td class="text-right"><a href="?act=edit&id={$n.id}">编辑</a> | <a href="javascript:if(confirm('确认删除该导航栏?')) window.location.href='nav.php?act=delete&id={$n.id}';">删除</a></td>
                     </tr>
                     {/if}
                     {/foreach}
@@ -81,12 +76,7 @@
                         <td>{$n.url}</td>
                         <td>{$n.order_view}</td>
                         <td>{$n.position}</td>
-                        {if $n.isShow eq 1}
-<!--                        <td>是</td>-->
-                        {else}
-<!--                        <td>否</td>-->
-                        {/if}
-                        <td class="text-right"><a href="?act=edit&id={$n.id}">编辑</a> | <a href="?act=delete&id={$n.id}">删除</a></td>
+                        <td class="text-right"><a href="?act=edit&id={$n.id}">编辑</a> | <a href="javascript:if(confirm('确认删除该导航栏?')) window.location.href='nav.php?act=delete&id={$n.id}';">删除</a></td>
                     </tr>
                     {/if}
                     {/foreach}
@@ -121,12 +111,10 @@
                         <td>{$n.url}</td>
                         <td>{$n.order_view}</td>
                         <td>{$n.position}</td>
-                        {if $n.isShow eq 1}
-<!--                        <td>是</td>-->
-                        {else}
-<!--                        <td>否</td>-->
-                        {/if}
-                        <td class="text-right"><a href="?act=edit&id={$n.id}">编辑</a> | <a href="?act=delete&id={$n.id}">删除</a></td>
+                        <td class="text-right">
+                            <a href="?act=edit&id={$n.id}">编辑</a> | 
+                            <a href="javascript:if(confirm('确认删除该导航栏?')) window.location.href='nav.php?act=delete&id={$n.id}';">删除</a>
+                        </td>
                     </tr>
                     {/if}
                     {/foreach}

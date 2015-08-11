@@ -75,7 +75,7 @@
                     <p>
                         <select name="articleCatId" class="w-100">
                             {foreach from=$sectionList item=section}
-                            <option value="{$section.id}" {if $content.section_id eq $sectionlid}selected="selected"{/if}>{$section.name}</option>
+                            <option value="{$section.id}" {if $content.section_id eq $section.id}selected="selected"{/if}>{$section.name}</option>
                             {/foreach}
                         </select>
                     </p>

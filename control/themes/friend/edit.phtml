@@ -14,46 +14,48 @@
             <fieldset>
                 <p class="clear">
                     <label class="l-title">链接名称:</label>
-                    <input class="text-input w300" type="text" id="name" name="name" placeholder="请输入链接名称"/>
+                    <input class="text-input w300" type="text" value="{$link.name}" id="name" name="name" placeholder="请输入链接名称"/>
                     <span class="error-input" id="name-error">{if isset($error.name)}{$error.name}{/if}</span>
                 </p>
                 <p class="clear">
                     <label class="l-title">url:</label>
-                    <input class="text-input w300" type="text" id="url" name="url" placeholder="请输入url"/>
+                    <input class="text-input w300" type="text" value="{$link.url}" id="url" name="url" placeholder="请输入url"/>
                     <span class="error-input" id="url-error">{if isset($error.url)}{$error.url}{/if}</span>
                 </p>
                 <p class="clear">
                     <label class="l-title">链接排序:</label>
-                    <input class="text-input w300" type="number" id="order_view" name="order_view" placeholder="请输入排序" value="50"/>
+                    <input class="text-input w300" type="number" value="{$link.order_view}" id="order_view" name="order_view" placeholder="请输入排序" value="50"/>
                     <span class="error-input" id="order_view-error">{if isset($error.order_view)}{$error.order_view}{/if}</span>
                 </p>
                 <p class="clear">
                     <label class="l-title">权重传递:</label>
-                    <input type="radio" name="no_followed" value="1" checked="checked"/><em>否</em>&nbsp;
-                    <input type="radio" name="no_followed" value="0"/><em>是</em>
+                    <input type="radio" name="no_followed" value="1" {if $link.no_followed eq 1}checked="checked"{/if}/><em>否</em>&nbsp;
+                    <input type="radio" name="no_followed" value="0" {if $link.no_followed eq 0}checked="checked"{/if}/><em>是</em>
                     <span class="error-input" id="no_followed-error">{if isset($error.no_followed)}{$error.no_followed}{/if}</span>
                 </p>
                 <p class="clear">
                     <label class="l-title">链接类型:</label>
                     <select name="type" id="type" class="w150" onchange="select_link_type(this.value);">
-                        <option value="text">文字链接</option>
-                        <option value="img">图片链接</option>
+                        <option value="text" {if $link.type eq "text"}selected="selected"{/if}>文字链接</option>
+                        <option value="img" {if $link.type eq "img"}selected="selected"{/if}>图片链接</option>
                     </select>
                     <span class="error-input" id="type-error">{if isset($error.type)}{$error.type}{/if}</span>
                 </p>
-                <p class="clear" style="display: none" id="img-input">
+                <p class="clear" {if $link.type eq "text"}style="display: none"{/if} id="img-input">
                     <label class="l-title">链接图片:</label>
-                    <input type="hidden" name="img" value="" id="img"/>
-                    <input type="file" name="upload" id="upload"/><input type="button" class="btn" name="upload_btn" id="upload_btn" value="上传"/>
-                    <img src="about:blank" id="upload-img"/>
+                    <input type="hidden" name="img" value="{$link.img}" id="img"/>
+                    <input type="file" name="upload" id="upload"/>
+                    <input type="button" class="btn" name="upload_btn" id="upload_btn" value="上传"/>
+                    <img src="../{$link.img}" id="upload-img"/>
                     <span class="error-input" id="img-error">{if isset($error.img)}{$error.img}{/if}</span>
                 </p>
                 <p>
                     <label class="l-title"></label>
                     <a class="btn btn-primary" id="submit-btn" href="javascript:;">
-                        新增<img src="images/btn_loading.gif" class="btn-loading-img"/>
+                        修改<img src="images/btn_loading.gif" class="btn-loading-img"/>
                     </a>&nbsp;
-                    <input type="hidden" name="opera" value="add"/>
+                    <input type="hidden" name="opera" value="edit"/>
+                    <input type="hidden" name="eid" id="eid" value="{$link.id}"/>
                     <a href="javascript:history.go(-1);" class="btn btn-primary">返回</a>
                 </p>                
             </fieldset>
@@ -81,7 +83,14 @@ function do_submit() {
     var type = $("#type").val().trim();
     var name = $("#name").val().trim();
     var order_view = parseInt($("#order_view").val().trim());
+    var eid = parseInt($("#eid").val().trim());
     var flag = true;
+
+    if(isNaN(eid) || eid <= 0)
+    {
+        alert("参数错误");
+        flag = false;
+    }
 
     if(url == "") {
         $("#url-error").text("-请输入url");
@@ -127,11 +136,11 @@ function do_submit() {
     if(flag) {
         flag = true;
         //启用过渡效果
-        $(".btn-loading-img").show();
         $("#submit-btn").addClass("btn-disabled");
+        $(".btn-loading-img").show();
         $("#mask").show();
 
-        var params = { "opera":"add", "url":url, "name":name, "img":img, "order_view":order_view, "type":type, "no_followed":no_followed };
+        var params = { "opera":"edit", "url":url, "name":name, "img":img, "order_view":order_view, "type":type, "no_followed":no_followed, "eid":eid };
         var url = "friend.php";
         $.post(url, params, do_response, "json");
     }
@@ -147,8 +156,8 @@ function do_response(result) {
     //处理返回结果
     if(result.error == 0) {
         alert(result.msg);
-        document.forms['friend-form'].reset();
         $("#upload-img").attr("src", "about:blank");
+        window.location.reload();
     } else {
         if(result.msg != "") {
             alert(result.msg);

@@ -124,7 +124,7 @@ if( 'edit' == $opera ) {
     if( 0 > $parent_id ) {
         $error .= '-父级导航栏参数错误'."\n";
     } else {
-        $parentId = intval($parentId);
+        $parent_id = intval($parent_id);
     }
 
     if('' == $url) {
