@@ -485,3 +485,9 @@ ul.tabs li.active a{
     opacity: 1;
 }
 /* END 资讯样式 */
+/*  友情链接样式 */
+.friend-link-img
+{
+    height: 100px;
+}
+/* END  友情链接样式 */

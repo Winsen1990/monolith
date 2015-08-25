@@ -42,12 +42,14 @@
                     <span class="error-input" id="type-error">{if isset($error.type)}{$error.type}{/if}</span>
                 </p>
                 <p class="clear" {if $link.type eq "text"}style="display: none"{/if} id="img-input">
-                    <label class="l-title">链接图片:</label>
-                    <input type="hidden" name="img" value="{$link.img}" id="img"/>
-                    <input type="file" name="upload" id="upload"/>
-                    <input type="button" class="btn" name="upload_btn" id="upload_btn" value="上传"/>
-                    <img src="../{$link.img}" id="upload-img"/>
+                    <label class="l-title">链接图片：</label>
+                    <input type="button" class="text-input" id="select-image" value="请选择链接图片" style="cursor:pointer">
+                    <input type="hidden" class="" name="img" id="img" value="{$link.img}"/>
                     <span class="error-input" id="img-error">{if isset($error.img)}{$error.img}{/if}</span>
+                </p>
+                <p id="img-show" {if $link.type eq "text"}style="display: none"{/if}>
+                    <label class="l-title"></label>
+                    <img id="show-image" alt="" src="{if $link.type eq "img"}{$link.img}{else}http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image{/if}">
                 </p>
                 <p>
                     <label class="l-title"></label>
@@ -156,7 +158,6 @@ function do_response(result) {
     //处理返回结果
     if(result.error == 0) {
         alert(result.msg);
-        $("#upload-img").attr("src", "about:blank");
         window.location.reload();
     } else {
         if(result.msg != "") {
@@ -177,48 +178,48 @@ function select_link_type(type)
     if(type == "img")
     {
         $("#img-input").show();
+        $("#img-show").show();
     } else {
         $("#img-input").hide();
+        $("#img-show").hide();
     }
 }
+</script>
+<link rel="stylesheet" type="text/css" href="../plugins/kindeditor/plugins/code/prettify.css"/>
+<link rel="stylesheet" type="text/css" href="../plugins/kindeditor/themes/default/default.css"/>
+<script type="text/javascript" src="../plugins/kindeditor/kindeditor-all-min.js"></script>
+<script type="text/javascript">
+    KindEditor.ready(function(K) {
+        var editor = K.editor({
+            allowFileManager : true,
+            uploadJson : 'plugin_upload_json.php',
+            fileManagerJson : '../plugins/kindeditor/file_manager_json.php'
+        });
+        K('#select-image').click(function() {
+            editor.loadPlugin('fileupload', function() {
+                editor.plugin.imageDialog({
+                    imageUrl : '',
+                    clickFn : function(url, title, width, height, border, align) {
+                        if( !width ) {
+                            width = '200';
+                            width = (width == '') ? '75px' : width + 'px'
+                        }
+                        if( !height ) {
+                            height = '100';
+                            height = (height == '') ? '75px' : height + 'px'
+                        }
 
-function ajaxFileUpload()
-{
-	$("#loading").ajaxStart(function(){
-		$(this).show();
-	}).ajaxComplete(function(){
-		$(this).hide();
-	});
-
-	$.ajaxFileUpload({
-		url:'doajaxfileupload.php',
-		secureuri:false,
-		fileElementId:'upload',
-		dataType: 'json',
-		data:{ name:'logan', id:'id' },
-		success: function (data, status) {
-			if(typeof(data.error) != 'undefined') {
-				if(data.error != '') {
-					alert(data.error);
-				} else {
-                    alert(data.msg);
-                    $("#upload-img").attr("src", "../"+data.file);
-                    $("#img").val(data.file);
-				}
-			}
-		},
-
-		error: function (data, status, e) {
-			alert(e);
-		}
-	});
-		
-	return false;
-}
-
-$(function() {
-    $("#upload_btn").click(ajaxFileUpload);
-});
+                        K('#img').val(url);
+                        K('#show-image').attr('src', url);
+                        K('#show-image').css('width', width);
+                        K('#show-image').css('height', height);                        
+                        K('#show-image').css('display', 'block');
+                        editor.hideDialog();
+                    }
+                });
+            });
+        });
+    });
 </script>
 <!-- END content -->
 

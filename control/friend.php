@@ -12,7 +12,7 @@ back_base_init();
 $template = 'friend/';
 assign('subTitle', '友情链接管理');
 
-$action = 'edit|add|view';
+$action = 'edit|add|view|delete';
 $operation = 'edit|add';
 
 $act = check_action($action, getGET('act'));
@@ -236,6 +236,11 @@ if('view' == $act)
 
 if('edit' == $act)
 {
+    if( !check_purview('pur_friend_edit', $_SESSION['purview']) ) {
+        show_system_message('权限不足');
+        exit;
+    }
+
     $id = intval(getGET('id'));
 
     $get_link = 'select `id`,`url`,`img`,`name`,`order_view`,`type`,`no_followed` from '.$db->table('friend_link').' where `id`='.$id;
@@ -243,6 +248,38 @@ if('edit' == $act)
     assign('link', $db->fetchRow($get_link));
 }
 
+if('delete' == $act)
+{
+    if( !check_purview('pur_friend_del', $_SESSION['purview']) ) {
+        show_system_message('权限不足');
+        exit;
+    }
+
+    $id = intval(getGET('id'));
+
+    if($id <= 0)
+    {
+        show_system_message('请求失败');
+        exit;
+    }
+
+    $get_img = 'select `img` from '.$db->table('friend_link').' where `id`='.$id;
+
+    $img = $db->fetchOne($get_img);
+
+    if($db->autoDelete('friend_link', '`id`='.$id))
+    {
+        if($img)
+        {
+            unlink('./../..'.$img);
+        }
+        show_system_message('删除友情链接成功');
+        exit;
+    } else {
+        show_system_message('系统繁忙，请稍后再试');
+        exit;
+    }
+}
 
 $template .= $act.'.phtml';
 $smarty->display($template);

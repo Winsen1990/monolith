@@ -39,7 +39,7 @@
                     {/foreach}
                     {else}
                     <tr>
-                        <td style="padding: 50px 0" colspan="6" align="center">您还没有友情链接，立即点击 “<a href="?act=add" target="_blank">这里</a>” 添加友情链接！</td>
+                        <td style="padding: 50px 0" colspan="6" align="center">您还没有友情链接，立即点击 “<a href="?act=add">这里</a>” 添加友情链接！</td>
                     </tr>
                     {/if}
                     </tbody>
@@ -65,14 +65,17 @@
                         <td>{$n.name}</td>
                         <td>{$n.url}</td>
                         <td>{$n.order_view}</td>
-                        <td><img src="../{$n.img}" class="friend-link-img"/></td>
+                        <td><img src="{$n.img}" class="friend-link-img"/></td>
                         <td>{if $n.no_followed eq 1}否{else}是{/if}</td>
-                        <td class="text-right"><a href="?act=edit&id={$n.id}">编辑</a> | <a href="?act=delete&id={$n.id}">删除</a></td>
+                        <td class="text-right">
+                            <a href="?act=edit&id={$n.id}">编辑</a> | 
+                            <a href="javascript:delete_friend_link({$n.id});">删除</a>
+                        </td>
                     </tr>
                     {/foreach}
                     {else}
                     <tr>
-                        <td style="padding: 50px 0" colspan="6" align="center">您还没有友情链接，立即点击 “<a href="?act=add" target="_blank">这里</a>” 添加友情链接！</td>
+                        <td style="padding: 50px 0" colspan="6" align="center">您还没有友情链接，立即点击 “<a href="?act=add">这里</a>” 添加友情链接！</td>
                     </tr>
                     {/if}
                     </tbody>
@@ -81,6 +84,13 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+function delete_friend_link(id) {
+    if(confirm("您确定要删除该链接?")) {
+        window.location.href = "?act=delete&id="+id;
+    }
+}
+</script>
 <!-- END content -->
 {include file="library/footer.lbi"}
 </body>
