@@ -491,3 +491,9 @@ ul.tabs li.active a{
     height: 100px;
 }
 /* END  友情链接样式 */
+/* 广告管理样式 */
+.ad-img
+{
+    width: 120px;
+}
+/* END 广告管理样式 */

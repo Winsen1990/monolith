@@ -216,7 +216,7 @@ if( 'add' == $opera ) {
     );
 
     if($db->autoInsert('admin', array($data))) {
-        show_system_message('新增管理员成功', array(array('alt'=>'查看管理员列表', 'link'=>'adminUser.php')));
+        show_system_message('新增管理员成功', array(array('alt'=>'查看管理员列表', 'link'=>'admin.php')));
         exit;
     } else {
         show_system_message('系统繁忙，请稍后再试', array());
