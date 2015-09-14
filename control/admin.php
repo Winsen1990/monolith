@@ -192,18 +192,6 @@ if( 'add' == $opera ) {
         }
     }
 
-//    if( '' == $mobile ) {
-//        show_system_message('手机号码不能为空', array());
-//        exit;
-//    } else {
-//        $mobile = $db->escape(htmlspecialchars($mobile));
-//        $checkMobile = 'select `account` from `'.DB_PREFIX.'admin` where `mobile`=\''.$mobile.'\'';
-//        if($db->fetchRow($checkMobile)) {
-//            show_system_message('手机号码已被占用，请使用其他号码', array());
-//            exit;
-//        }
-//    }
-
     if( isset($_FILES['photo']) ) {
         $photo = upload($_FILES['photo']);
         if($photo['error'] == 0) {
@@ -228,7 +216,7 @@ if( 'add' == $opera ) {
     );
 
     if($db->autoInsert('admin', array($data))) {
-        show_system_message('新增管理员成功', array(array('alt'=>'查看管理员列表', 'link'=>'adminUser.php')));
+        show_system_message('新增管理员成功', array(array('alt'=>'查看管理员列表', 'link'=>'admin.php')));
         exit;
     } else {
         show_system_message('系统繁忙，请稍后再试', array());

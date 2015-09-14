@@ -76,8 +76,8 @@ $table[] = '广告位置';
 $sql[] = 'create table if not exists '.$db->table('ad_position').' (
     `id` int not null auto_increment primary key,
     `pos_name` varchar(255) not null,
-    `width` decimal(18,2) not null,
-    `height` decimal(18,2) not null,
+    `width` varchar(255) not null,
+    `height` varchar(255) not null,
     `number` int not null default \'1\',
     `code` text
 ) default charset=utf8;';

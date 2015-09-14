@@ -62,6 +62,20 @@ $purview = array(
         'pur_friend_edit',
         'pur_friend_del',
     ),
+    //广告位置
+    'pur_adpos' => array(
+        'pur_adpos_view',
+        'pur_adpos_add',
+        'pur_adpos_edit',
+        'pur_adpos_del',
+    ),
+    //广告
+    'pur_ad' => array(
+        'pur_ad_view',
+        'pur_ad_add',
+        'pur_ad_edit',
+        'pur_ad_del',
+    ),
 );
 
 global $L_purview;

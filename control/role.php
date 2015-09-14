@@ -74,7 +74,7 @@ if( 'edit' == $opera ) {
     $limit = '1';
 
     if( $db->autoUpdate('role', $data, $where , $order, $limit) ) {
-        show_system_message('修改管理员角色成功', array(array('alt'=>'查看管理员角色列表','link'=>'adminRole.php')));
+        show_system_message('修改管理员角色成功', array(array('alt'=>'查看管理员角色列表','link'=>'role.php')));
         exit;
     } else {
         show_system_message('系统繁忙，请稍后再试', array());
@@ -153,7 +153,6 @@ if( 'add' == $act ) {
     global $purview, $L_purview;
     assign('purviews', $purview);
     assign('purviewValue', $L_purview);
-//    assign('menus', $menus);
 }
 
 if( 'edit' == $act ) {
