@@ -51,6 +51,8 @@ if( 'add' == $opera ) {
         } else {
             $thumb = '';
         }
+    } else {
+        $thumb = '';
     }
 
     if( '' == $title ) {
@@ -85,7 +87,7 @@ if( 'add' == $opera ) {
         show_system_message('参数错误', array());
         exit;
     } else {
-        $articleCatId = intval($articleCatId);
+        $section_id = intval($section_id);
     }
     if( empty($content) ) {
         show_system_message('文章内容不能为空', array());
@@ -104,7 +106,7 @@ if( 'add' == $opera ) {
     if('' == $isAutoPublish || 0 == intval($isAutoPublish) )
     {
         $isAutoPublish = 0;
-        $publishTime = $addTime;
+        $publishTime = $add_time;
     } else {
         if(preg_match('^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)\ \d{1,2}:\d{1,2}:\d{1,2}$', $publishTime)) {
             $dateTime = explode(' ', $publishTime);
@@ -191,6 +193,8 @@ if( 'edit' == $opera ) {
         } else {
             $thumb = '';
         }
+    } else {
+        $thumb = '';
     }
 
     if( '' == $title ) {
@@ -225,7 +229,7 @@ if( 'edit' == $opera ) {
         show_system_message('参数错误', array());
         exit;
     } else {
-        $articleCatId = intval($articleCatId);
+        $section_id = intval($section_id);
     }
     if( empty($content) ) {
         show_system_message('文章内容不能为空', array());
@@ -243,7 +247,7 @@ if( 'edit' == $opera ) {
     $isAutoPublish = intval($isAutoPublish);
     if('' == $isAutoPublish || 0 == intval($isAutoPublish) ) {
         $isAutoPublish = 0;
-        $publishTime = $addTime;
+        $publishTime = $add_time;
     } else {
         if(preg_match('^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)\ \d{1,2}:\d{1,2}:\d{1,2}$', $publishTime)) {
             $dateTime = explode(' ', $publishTime);
@@ -545,8 +549,10 @@ if( 'cycle' == $act ) {
     $get_content_list .= ' limit '.$offset.','.$count;
     $content_list = $db->fetchAll($get_content_list);
 
-    foreach( $content_list as $key => $content ) {
-        $content_list[$key]['add_time'] = date('Y-m-d H:i:s', $content['add_time']);
+    if( $content_list ) {
+        foreach( $content_list as $key => $content ) {
+            $content_list[$key]['add_time'] = date('Y-m-d H:i:s', $content['add_time']);
+        }
     }
 
     assign('contentList', $content_list);
