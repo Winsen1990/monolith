@@ -22,7 +22,10 @@ $act = ( $act == '' ) ? 'login' : $act;
 
 $opera = check_action($operation, getPOST('opera'));
 
-$error = array();
+$error = array(
+    'account' => '',
+    'password' => '',
+);
 
 //登陆
 if( 'login' == $opera ) {

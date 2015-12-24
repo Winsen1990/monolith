@@ -51,6 +51,8 @@ if( 'add' == $opera ) {
         } else {
             $thumb = '';
         }
+    } else {
+        $thumb = '';
     }
 
     if( '' == $title ) {
@@ -192,6 +194,8 @@ if( 'edit' == $opera ) {
         } else {
             $thumb = '';
         }
+    } else {
+        $thumb = '';
     }
 
     if( '' == $title ) {
