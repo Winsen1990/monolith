@@ -31,7 +31,7 @@ if( 'add' == $opera ) {
 
     $title = trim(getPOST('title'));
     $author = trim(getPOST('author'));
-    $section_id = trim(getPOST('articleCatId'));
+    $section_id = trim(getPOST('section_id'));
     $keywords = trim(getPOST('keywords'));
     $description = trim(getPOST('description'));
     $content = trim(getPOST('content'));
@@ -41,7 +41,7 @@ if( 'add' == $opera ) {
     $add_time = time();
     $original_url = trim(getPOST('original-url'));
     $order_view = trim(getPOST('order-view'));
-
+    $thumb = '';
     $original = trim(getPOST('img'));
 
     if( '' != $original ) {
@@ -85,7 +85,7 @@ if( 'add' == $opera ) {
         show_system_message('参数错误', array());
         exit;
     } else {
-        $articleCatId = intval($articleCatId);
+        $section_id = intval($section_id);
     }
     if( empty($content) ) {
         show_system_message('文章内容不能为空', array());
@@ -104,7 +104,7 @@ if( 'add' == $opera ) {
     if('' == $isAutoPublish || 0 == intval($isAutoPublish) )
     {
         $isAutoPublish = 0;
-        $publishTime = $addTime;
+        $publishTime = time();
     } else {
         if(preg_match('^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)\ \d{1,2}:\d{1,2}:\d{1,2}$', $publishTime)) {
             $dateTime = explode(' ', $publishTime);
@@ -171,7 +171,7 @@ if( 'edit' == $opera ) {
 
     $title = trim(getPOST('title'));
     $author = trim(getPOST('author'));
-    $section_id = trim(getPOST('articleCatId'));
+    $section_id = trim(getPOST('section_id'));
     $keywords = trim(getPOST('keywords'));
     $description = trim(getPOST('description'));
     $content = trim(getPOST('content'));
@@ -182,6 +182,7 @@ if( 'edit' == $opera ) {
     $order_view = trim(getPOST('order-view'));
     $add_time = '';
 
+    $thumb = '';
     $original = trim(getPOST('img'));
 
     if( '' != $original ) {
@@ -225,7 +226,7 @@ if( 'edit' == $opera ) {
         show_system_message('参数错误', array());
         exit;
     } else {
-        $articleCatId = intval($articleCatId);
+        $section_id = intval($section_id);
     }
     if( empty($content) ) {
         show_system_message('文章内容不能为空', array());
@@ -243,7 +244,7 @@ if( 'edit' == $opera ) {
     $isAutoPublish = intval($isAutoPublish);
     if('' == $isAutoPublish || 0 == intval($isAutoPublish) ) {
         $isAutoPublish = 0;
-        $publishTime = $addTime;
+        $publishTime = time();
     } else {
         if(preg_match('^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)\ \d{1,2}:\d{1,2}:\d{1,2}$', $publishTime)) {
             $dateTime = explode(' ', $publishTime);
@@ -357,8 +358,12 @@ if( 'view' == $act ) {
     $get_content_list .= ' limit '.$offset.','.$count;
     $content_list = $db->fetchAll($get_content_list);
 
-    foreach( $content_list as $key => $content ) {
-        $content_list[$key]['add_time'] = date('Y-m-d H:i:s', $content['add_time']);
+    if($content_list)
+    {
+        foreach( $content_list as $key => $content ) 
+        {
+            $content_list[$key]['add_time'] = date('Y-m-d H:i:s', $content['add_time']);
+        }
     }
 
     assign('contentList', $content_list);
@@ -379,19 +384,23 @@ if( 'add' == $act ) {
         exit;
     }
 
-    foreach( $section_list as $key => $section ) {
-        $count = count(explode(',', $section['path']));
+    if($section_list)
+    {
+        foreach( $section_list as $key => $section ) 
+        {
+            $count = count(explode(',', $section['path']));
 
-        if( $count > 1 ) {
-            $temp = '|--';
-            while( $count-- ) {
-                $temp = '&nbsp;&nbsp;'.$temp;
+            if( $count > 1 ) {
+                $temp = '|--';
+                while( $count-- ) {
+                    $temp = '&nbsp;&nbsp;'.$temp;
+                }
+
+                $section['name'] = $temp.$section['section_name'];
             }
 
-            $section['name'] = $temp.$section['section_name'];
+            $section_list[$key] = $section;
         }
-
-        $section_list[$key] = $section;
     }
 
     assign('defaultAuthor', $_SESSION['name']);
@@ -443,19 +452,23 @@ if( 'edit' == $act ) {
         exit;
     }
 
-    foreach( $section_list as $key => $section ) {
-        $count = count(explode(',', $section['path']));
+    if($section_list)
+    {
+        foreach( $section_list as $key => $section ) 
+        {
+            $count = count(explode(',', $section['path']));
 
-        if( $count > 1 ) {
-            $temp = '|--';
-            while( $count-- ) {
-                $temp = '&nbsp;&nbsp;'.$temp;
+            if( $count > 1 ) {
+                $temp = '|--';
+                while( $count-- ) {
+                    $temp = '&nbsp;&nbsp;'.$temp;
+                }
+
+                $section['name'] = $temp.$section['section_name'];
             }
 
-            $section['name'] = $temp.$section['section_name'];
+            $section_list[$key] = $section;
         }
-
-        $section_list[$key] = $section;
     }
 
     assign('sectionList', $section_list);
@@ -545,8 +558,12 @@ if( 'cycle' == $act ) {
     $get_content_list .= ' limit '.$offset.','.$count;
     $content_list = $db->fetchAll($get_content_list);
 
-    foreach( $content_list as $key => $content ) {
-        $content_list[$key]['add_time'] = date('Y-m-d H:i:s', $content['add_time']);
+    if($content_list)
+    {
+        foreach( $content_list as $key => $content ) 
+        {
+            $content_list[$key]['add_time'] = date('Y-m-d H:i:s', $content['add_time']);
+        }
     }
 
     assign('contentList', $content_list);

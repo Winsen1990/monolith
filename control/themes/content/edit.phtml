@@ -73,7 +73,7 @@
                 <fieldset>
                     <h5>资讯分类</h5>
                     <p>
-                        <select name="articleCatId" class="w-100">
+                        <select name="section_id" class="w-100">
                             {foreach from=$sectionList item=section}
                             <option value="{$section.id}" {if $content.section_id eq $section.id}selected="selected"{/if}>{$section.name}</option>
                             {/foreach}
