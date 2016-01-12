@@ -29,6 +29,15 @@
                     <input class="text-input w300" type="text" id="order_view" name="order_view" value="50">
                 </p>
                 <p>
+                    <label class="l-title">页面样式：</label>
+                    <select name="template" class="w150">
+                        <option value="">默认样式</option>
+                        {foreach from=$template_list item=template}
+                        <option value="{$template}">{$template}</option>
+                        {/foreach}
+                    </select>
+                </p>
+                <p>
                     <label class="l-title">栏目关键字：</label>
                     <input class="text-input w300" type="text" id="keywords" name="keywords"  placeholder='请输入栏目关键字，多个关键字以英文逗号","隔开'>
                 </p>
@@ -50,7 +59,7 @@
                 <p>
                     <label class="l-title"></label>
                     <input type="hidden" name="opera" value="add" />
-                    <button class="btn btn-primary" type="submit">添加</button> &nbsp;<a href="articleCat.php.php" class="btn btn-primary">返回</a>
+                    <button class="btn btn-primary" type="submit">添加</button> &nbsp;<a href="section.php" class="btn btn-primary">返回</a>
                 </p>
             </fieldset>
         </form>

@@ -78,6 +78,16 @@
                     </p>
                 </fieldset>
                 <fieldset>
+                    <h5>页面样式</h5>
+                    <p>
+                        <select name="template" class="w-100">
+                            {foreach from=$template_list item=template}
+                            <option value="{$template}">{$template}</option>
+                            {/foreach}
+                        </select>
+                    </p>
+                </fieldset>
+                <fieldset>
                     <h5>封面设置</h5>
                     <p>
                         <input type="button" class="text-input" id="select-image" value="请选择分类封面" style="cursor:pointer">

@@ -9,6 +9,7 @@
 session_start();
 date_default_timezone_set('Asia/Shanghai');
 define('ROOT_PATH', str_replace('library/init.inc.php', '',str_replace('\\', '/', __FILE__)));
+define('BASE_DIR', str_replace($_SERVER['DOCUMENT_ROOT'], '',str_replace('\\', '/', ROOT_PATH)));
 if(!class_exists('AutoLoader'))
 {
     include('AutoLoader.class.php');
@@ -75,15 +76,24 @@ $nav = array(
     'bottom' => array()
 );
 
+$current_script = str_replace(BASE_DIR, '', $_SERVER['REQUEST_URI']);
+
 if($nav_tmp)
 {
     foreach($nav_tmp as $n)
     {
+        $current = false;
+
+        if($current_script == $n['url'])
+        {
+            $current = true;
+        }
+
         $get_children = 'select `name`,`url`,`position` from '.$db->table('nav').' where `parent_id`='.$n['id'].' order by order_view ASC';
         $nav[$n['position']][] = array(
             'name' => $n['name'],
             'url' => $n['url'],
-            'current' => false,
+            'current' => $current,
             'children' => $db->fetchAll($get_children)
         );
     }

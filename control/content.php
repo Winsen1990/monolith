@@ -43,6 +43,12 @@ if( 'add' == $opera ) {
     $order_view = trim(getPOST('order-view'));
     $thumb = '';
     $original = trim(getPOST('img'));
+    $template = trim(getPOST('template'));
+
+    if($template == '')
+    {
+        $template = 'article.phtml';
+    }
 
     if( '' != $original ) {
         $original = $db->escape(htmlspecialchars($original));
@@ -144,6 +150,7 @@ if( 'add' == $opera ) {
         'order_view' => $order_view,
         'original_url' => $original_url,
         'section_id' => $section_id,
+        'template' => $template
     );
     if( $db->autoInsert('content', array($data)) ) {
         $links = array(
@@ -182,7 +189,13 @@ if( 'edit' == $opera ) {
     $isAutoPublish = trim(getPOST('isAutoPublish'));
     $original_url = trim(getPOST('original-url'));
     $order_view = trim(getPOST('order-view'));
+    $template = trim(getPOST('template'));
     $add_time = '';
+
+    if($template == '')
+    {
+        $template = 'article.phtml';
+    }
 
     $thumb = '';
     $original = trim(getPOST('img'));
@@ -285,6 +298,7 @@ if( 'edit' == $opera ) {
         'order_view' => $order_view,
         'original_url' => $original_url,
         'section_id' => $section_id,
+        'template' => $template
     );
 
     if( intval($isAutoPublish) == 1 ) {
@@ -306,8 +320,6 @@ if( 'edit' == $opera ) {
         show_system_message('系统繁忙，请稍后再试', array());
         exit;
     }
-
-
 }
 
 
@@ -419,6 +431,9 @@ if( 'add' == $act ) {
 
     assign('configs', $target);
 
+    //读取可用的模板文件
+    $template_config = simplexml_load_file(ROOT_PATH.'themes/'.$target['themes'].'/themes.xml');
+    assign('template_list', $template_config->article->template);
 }
 
 //编辑内容
@@ -485,6 +500,10 @@ if( 'edit' == $act ) {
     }
 
     assign('configs', $target);
+    
+    //读取可用的模板文件
+    $template_config = simplexml_load_file(ROOT_PATH.'themes/'.$target['themes'].'/themes.xml');
+    assign('template_list', $template_config->article->template);
 }
 
 //删除内容
