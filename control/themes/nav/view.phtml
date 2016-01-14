@@ -12,12 +12,16 @@
     <div class="nav-main">
 
         <ul class="tabs">
-            <li class="active"><a href="#tab1">顶部导航</a></li>
-            <li><a href="#tab2">中部导航</a></li>
+            {if isset($navs.top)}
+            <li><a href="#tab1">顶部导航</a></li>
+            {/if}
+            <li class="active"><a href="#tab2">中部导航</a></li>
+            {if isset($navs.bottom)}
             <li><a href="#tab3">底部导航</a></li>
+            {/if}
         </ul>
         <div class="tab_container">
-            <div id="tab1" class="tab_content" style="display: block; ">
+            <div id="tab1" class="tab_content" style="display: none;">
                 <table class="table">
                     <thead>
                     <tr>
@@ -31,7 +35,7 @@
                     </thead>
                     <tbody>
                     {$exists = false}
-                    {foreach from=$navs item=n}
+                    {foreach from=$navs.top item=n}
                     {if $n.position eq 'top'}
                     {$exists = true}
                     <tr>
@@ -54,7 +58,7 @@
                 </table>
             </div>
 
-            <div id="tab2" class="tab_content" style="display: none; ">
+            <div id="tab2" class="tab_content" style="display: block; ">
                 <table class="table">
                     <thead>
                     <tr>
@@ -62,12 +66,13 @@
                         <th>URL</th>
                         <th>排序(升序排列)</th>
                         <th>页面位置</th>
+<!--                        <th>是否显示</th>-->
                         <th class="text-right">操作</th>
                     </tr>
                     </thead>
                     <tbody>
                     {$exists = false}
-                    {foreach from=$navs item=n}
+                    {foreach from=$navs.middle item=n}
                     {if $n.position eq 'middle'}
                     {$exists = true}
                     <tr>
@@ -102,7 +107,7 @@
                     </thead>
                     <tbody>
                     {$exists = false}
-                    {foreach from=$navs item=n}
+                    {foreach from=$navs.bottom item=n}
                     {if $n.position eq 'bottom'}
                     {$exists = true}
                     <tr>
@@ -110,7 +115,6 @@
                         <td>{$n.url}</td>
                         <td>{$n.order_view}</td>
                         <td>{$n.position}</td>
-
                         <td class="text-right">
                             <a href="?act=edit&id={$n.id}">编辑</a> | 
                             <a href="javascript:if(confirm('确认删除该导航栏?')) window.location.href='nav.php?act=delete&id={$n.id}';">删除</a>

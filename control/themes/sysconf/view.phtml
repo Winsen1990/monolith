@@ -35,7 +35,7 @@
                     <td>
                         <input class="text-input" style="cursor: pointer;" type="button" id="select-image-{$conf.key}" value="请选择图片"/>
                         <input type="hidden" name="value" id="{$conf.key}" value="{$conf.value}" />
-                        <br /><img {if $conf.value eq ''}style="display: none"{/if} id="show-image-{$conf.key}" src="{$conf.value}" alt="{$conf.name}" />
+                        <br /><img {if $conf.value eq ''}style="display: none"{/if} id="show-image-{$conf.key}" src="{$conf.value}" alt="{$conf.name}" {if $conf.key eq logo}width="{$config.logo_width}" height="{$config.logo_height}"{/if}/>
                         <script type="text/javascript">
                             KindEditor.ready(function(K)
                             {

@@ -14,6 +14,7 @@
             <thead>
             <tr>
                 <th>栏目名称</th>
+                <th>链接</th>
                 <th class="text-right">操作</th>
             </tr>
             </thead>
@@ -22,6 +23,7 @@
             {foreach from=$sectionList item=section}
             <tr>
                 <td>{$section.section_name}</td>
+                <td>{$config.domain}article_list.php?id={$section.id}</td>
                 <td class="text-right"><a href="?act=edit&id={$section.id}">编辑</a> | <a onclick="javascript:if(confirm('确认要删除？')) return true; else return false;" href="?act=delete&id={$section.id}">删除</a></td>
             </tr>
             {/foreach}

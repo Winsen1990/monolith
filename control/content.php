@@ -28,10 +28,11 @@ if( 'add' == $opera ) {
         show_system_message('权限不足', array());
         exit;
     }
+    $response = array('error' => 1, 'msg' => '');
 
     $title = trim(getPOST('title'));
     $author = trim(getPOST('author'));
-    $section_id = trim(getPOST('articleCatId'));
+    $section_id = trim(getPOST('section_id'));
     $keywords = trim(getPOST('keywords'));
     $description = trim(getPOST('description'));
     $content = trim(getPOST('content'));
@@ -41,7 +42,7 @@ if( 'add' == $opera ) {
     $add_time = time();
     $original_url = trim(getPOST('original-url'));
     $order_view = trim(getPOST('order-view'));
-
+    $thumb = '';
     $original = trim(getPOST('img'));
 
     if( '' != $original ) {
@@ -51,13 +52,10 @@ if( 'add' == $opera ) {
         } else {
             $thumb = '';
         }
-    } else {
-        $thumb = '';
     }
 
     if( '' == $title ) {
-        show_system_message('标题不能为空', array());
-        exit;
+        $response['msg'] .= '-标题不能为空<br />';
     } else {
         $title = $db->escape(htmlspecialchars($title));
     }
@@ -69,29 +67,25 @@ if( 'add' == $opera ) {
     }
 
     if( '' == $keywords ) {
-        show_system_message('出于SEO的考虑，请务必填写关键词', array());
-        exit;
+        $response['msg'] .= '-出于SEO的考虑，请务必填写关键词<br />';
     } else {
         $keywords = $db->escape(htmlspecialchars($keywords));
     }
 
     if( '' == $description )
     {
-        show_system_message('出于SEO的考虑，请务必填写摘要', array());
-        exit;
+        $response['msg'] .= '-出于SEO的考虑，请务必填写描述<br />';
     } else {
         $description = $db->escape(htmlspecialchars($description));
     }
 
     if( '' == $section_id || 0 >= intval($section_id) ) {
-        show_system_message('参数错误', array());
-        exit;
+        $response['msg'] .= '-参数错误，请选择合法的栏目id<br />';
     } else {
         $section_id = intval($section_id);
     }
     if( empty($content) ) {
-        show_system_message('文章内容不能为空', array());
-        exit;
+        $response['msg'] .= '-文章内容不能为空<br />';
     } else {
         $content = $db->escape($content);
     }
@@ -106,7 +100,7 @@ if( 'add' == $opera ) {
     if('' == $isAutoPublish || 0 == intval($isAutoPublish) )
     {
         $isAutoPublish = 0;
-        $publishTime = $add_time;
+        $publishTime = time();
     } else {
         if(preg_match('^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)\ \d{1,2}:\d{1,2}:\d{1,2}$', $publishTime)) {
             $dateTime = explode(' ', $publishTime);
@@ -115,8 +109,7 @@ if( 'add' == $opera ) {
 
             $publishTime = mktime($time[0], $time[1], $time[2], $date[1], $date[2], $date[0]);
         } else {
-            show_system_message('发布时间格式不正确', array());
-            exit;
+            $response['msg'] .= '-发布时间格式不正确<br />';
         }
     }
 
@@ -129,6 +122,11 @@ if( 'add' == $opera ) {
     $order_view = intval($order_view);
     if( 0 > $order_view ) {
         $order_view = 50;
+    }
+
+    if( $response['msg'] != '' ) {
+        echo json_encode($response);
+        exit;
     }
 
     $data = array(
@@ -150,12 +148,13 @@ if( 'add' == $opera ) {
             array('alt'=>'返回列表', 'link'=>'content.php'),
             array('alt'=>'继续添加', 'link'=>'content.php?act=add'),
         );
-        show_system_message('添加内容成功', $links);
-        exit;
+        $response['msg'] .= '-添加内容成功<br />';
+        $response['error'] = 0;
     } else {
-        show_system_message('系统繁忙，请稍后再试', array());
-        exit;
+        $response['msg'] .= '-系统繁忙，请稍后再试<br />';
     }
+    echo json_encode($response);
+    exit;
 }
 
 if( 'edit' == $opera ) {
@@ -163,17 +162,18 @@ if( 'edit' == $opera ) {
         show_system_message('权限不足', array());
         exit;
     }
-
+    $response = array('error' => 1, 'msg' => '');
     $id = getPOST('id');
     $id = intval($id);
     if( 0 >= $id ) {
-        show_system_message('参数错误', array());
+        $response['msg'] = '参数错误';
+        echo json_encode($response);
         exit;
     }
 
     $title = trim(getPOST('title'));
     $author = trim(getPOST('author'));
-    $section_id = trim(getPOST('articleCatId'));
+    $section_id = trim(getPOST('section_id'));
     $keywords = trim(getPOST('keywords'));
     $description = trim(getPOST('description'));
     $content = trim(getPOST('content'));
@@ -182,8 +182,7 @@ if( 'edit' == $opera ) {
     $isAutoPublish = trim(getPOST('isAutoPublish'));
     $original_url = trim(getPOST('original-url'));
     $order_view = trim(getPOST('order-view'));
-    $add_time = '';
-
+    $thumb = '';
     $original = trim(getPOST('img'));
 
     if( '' != $original ) {
@@ -193,13 +192,10 @@ if( 'edit' == $opera ) {
         } else {
             $thumb = '';
         }
-    } else {
-        $thumb = '';
     }
 
     if( '' == $title ) {
-        show_system_message('标题不能为空', array());
-        exit;
+        $response['msg'] .= '-标题不能为空<br />';
     } else {
         $title = $db->escape(htmlspecialchars($title));
     }
@@ -211,29 +207,25 @@ if( 'edit' == $opera ) {
     }
 
     if( '' == $keywords ) {
-        show_system_message('出于SEO的考虑，请务必填写关键词', array());
-        exit;
+        $response['msg'] .= '-出于SEO的考虑，请务必填写关键词<br />';
     } else {
         $keywords = $db->escape(htmlspecialchars($keywords));
     }
 
     if( '' == $description )
     {
-        show_system_message('出于SEO的考虑，请务必填写摘要', array());
-        exit;
+        $response['msg'] .= '-出于SEO的考虑，请务必填写描述<br />';
     } else {
         $description = $db->escape(htmlspecialchars($description));
     }
 
     if( '' == $section_id || 0 >= intval($section_id) ) {
-        show_system_message('参数错误', array());
-        exit;
+        $response['msg'] .= '-参数错误，请选择合法的栏目id<br />';
     } else {
         $section_id = intval($section_id);
     }
     if( empty($content) ) {
-        show_system_message('文章内容不能为空', array());
-        exit;
+        $response['msg'] .= '-文章内容不能为空<br />';
     } else {
         $content = $db->escape($content);
     }
@@ -245,9 +237,10 @@ if( 'edit' == $opera ) {
     }
 
     $isAutoPublish = intval($isAutoPublish);
-    if('' == $isAutoPublish || 0 == intval($isAutoPublish) ) {
+    if('' == $isAutoPublish || 0 == intval($isAutoPublish) )
+    {
         $isAutoPublish = 0;
-        $publishTime = $add_time;
+        $publishTime = time();
     } else {
         if(preg_match('^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)\ \d{1,2}:\d{1,2}:\d{1,2}$', $publishTime)) {
             $dateTime = explode(' ', $publishTime);
@@ -256,8 +249,7 @@ if( 'edit' == $opera ) {
 
             $publishTime = mktime($time[0], $time[1], $time[2], $date[1], $date[2], $date[0]);
         } else {
-            show_system_message('发布时间格式不正确', array());
-            exit;
+            $response['msg'] .= '-发布时间格式不正确<br />';
         }
     }
 
@@ -270,6 +262,11 @@ if( 'edit' == $opera ) {
     $order_view = intval($order_view);
     if( 0 > $order_view ) {
         $order_view = 50;
+    }
+
+    if( $response['msg'] != '' ) {
+        echo json_encode($response);
+        exit;
     }
 
     $data = array(
@@ -299,13 +296,13 @@ if( 'edit' == $opera ) {
             array('alt'=>'返回列表', 'link'=>'content.php'),
             array('alt'=>'添加内容', 'link'=>'content.php?act=add'),
         );
-        show_system_message('更新内容成功', $links);
-        exit;
+        $response['error'] = 0;
+        $response['msg'] = '更新内容成功';
     } else {
-        show_system_message('系统繁忙，请稍后再试', array());
-        exit;
+        $response['msg'] = '系统繁忙，请稍后再试';
     }
-
+    echo json_encode($response);
+    exit;
 
 }
 
@@ -335,7 +332,7 @@ if( 'view' == $act ) {
     }
     $keyword = $db->escape(htmlspecialchars(trim($keyword)));
     if( !empty($keyword) ) {
-        $orWhere = ' and a.`title` like \'%'.$keyword.'%\' or a.author like \'%'.$keyword.'%\' or s.section_name like \'%'.$keyword.'%\'';
+        $orWhere = ' and (a.`title` like \'%'.$keyword.'%\' or a.author like \'%'.$keyword.'%\' or s.section_name like \'%)'.$keyword.'%\'';
     } else {
         $orWhere = '';
     }
@@ -361,8 +358,12 @@ if( 'view' == $act ) {
     $get_content_list .= ' limit '.$offset.','.$count;
     $content_list = $db->fetchAll($get_content_list);
 
-    foreach( $content_list as $key => $content ) {
-        $content_list[$key]['add_time'] = date('Y-m-d H:i:s', $content['add_time']);
+    if($content_list)
+    {
+        foreach( $content_list as $key => $content ) 
+        {
+            $content_list[$key]['add_time'] = date('Y-m-d H:i:s', $content['add_time']);
+        }
     }
 
     assign('contentList', $content_list);
@@ -383,19 +384,23 @@ if( 'add' == $act ) {
         exit;
     }
 
-    foreach( $section_list as $key => $section ) {
-        $count = count(explode(',', $section['path']));
+    if($section_list)
+    {
+        foreach( $section_list as $key => $section ) 
+        {
+            $count = count(explode(',', $section['path']));
 
-        if( $count > 1 ) {
-            $temp = '|--';
-            while( $count-- ) {
-                $temp = '&nbsp;&nbsp;'.$temp;
+            if( $count > 1 ) {
+                $temp = '|--';
+                while( $count-- ) {
+                    $temp = '&nbsp;&nbsp;'.$temp;
+                }
+
+                $section['name'] = $temp.$section['section_name'];
             }
 
-            $section['name'] = $temp.$section['section_name'];
+            $section_list[$key] = $section;
         }
-
-        $section_list[$key] = $section;
     }
 
     assign('defaultAuthor', $_SESSION['name']);
@@ -447,19 +452,23 @@ if( 'edit' == $act ) {
         exit;
     }
 
-    foreach( $section_list as $key => $section ) {
-        $count = count(explode(',', $section['path']));
+    if($section_list)
+    {
+        foreach( $section_list as $key => $section ) 
+        {
+            $count = count(explode(',', $section['path']));
 
-        if( $count > 1 ) {
-            $temp = '|--';
-            while( $count-- ) {
-                $temp = '&nbsp;&nbsp;'.$temp;
+            if( $count > 1 ) {
+                $temp = '|--';
+                while( $count-- ) {
+                    $temp = '&nbsp;&nbsp;'.$temp;
+                }
+
+                $section['name'] = $temp.$section['section_name'];
             }
 
-            $section['name'] = $temp.$section['section_name'];
+            $section_list[$key] = $section;
         }
-
-        $section_list[$key] = $section;
     }
 
     assign('sectionList', $section_list);
@@ -523,7 +532,7 @@ if( 'cycle' == $act ) {
     }
     $keyword = $db->escape(htmlspecialchars(trim($keyword)));
     if( !empty($keyword) ) {
-        $orWhere = ' and a.`title` like \'%'.$keyword.'%\' or a.author like \'%'.$keyword.'%\' or s.section_name like \'%'.$keyword.'%\'';
+        $orWhere = ' and (a.`title` like \'%'.$keyword.'%\' or a.author like \'%'.$keyword.'%\' or s.section_name like \'%'.$keyword.'%\')';
     } else {
         $orWhere = '';
     }
@@ -549,8 +558,10 @@ if( 'cycle' == $act ) {
     $get_content_list .= ' limit '.$offset.','.$count;
     $content_list = $db->fetchAll($get_content_list);
 
-    if( $content_list ) {
-        foreach( $content_list as $key => $content ) {
+    if($content_list)
+    {
+        foreach( $content_list as $key => $content ) 
+        {
             $content_list[$key]['add_time'] = date('Y-m-d H:i:s', $content['add_time']);
         }
     }

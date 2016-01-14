@@ -17,6 +17,19 @@ $action = 'view';
 $act = check_action($action, getGET('act'));
 $act = ( $act == '' ) ? 'view' : $act;
 
+$get_content_count = 'select count(*) from '.$db->table('content').' where status = 1';
+$content_count =$db->fetchOne($get_content_count);
+
+$get_section_count = 'select count(*) from '.$db->table('section').' where 1';
+$section_count = $db->fetchOne($get_section_count);
+
+$get_user_count = 'select count(*) from '.$db->table('admin').' where 1';
+$user_count = $db->fetchOne($get_user_count);
+
+assign('content_count', $content_count);
+assign('section_count', $section_count);
+assign('user_count', $user_count);
+
 
 $template .= $act.'.phtml';
 $smarty->display($template);

@@ -143,7 +143,7 @@ if (empty($_FILES) === false) {
 
     $file_url = $save_url . $new_file_name;
 
-    header('Content-type: text/html; charset=UTF-8');
+    @header('Content-type: text/html; charset=UTF-8');
     $json = new Services_JSON();
     echo $json->encode(array('error' => 0, 'url' => $file_url));
     exit;
@@ -185,6 +185,8 @@ function create_thumb($filename, $type, $max_width = 75, $max_height = 75) {
     }
     $pic_width = imagesx($im);
     $pic_height = imagesy($im);
+    $resize_width_tag = false;
+    $resize_height_tag = false;
 
     //计算缩略图的宽和高
     if( ($max_width && $pic_width > $max_width) || ($max_height && $pic_height > $max_height) ) {

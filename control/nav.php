@@ -188,47 +188,54 @@ if( 'add' == $act ) {
     $navs = $db->fetchAll($getNavs);
 
     //初始化入栈标志
-    foreach( $navs as $k => $v ) {
-        $navs[$k]['in'] = false;
+    if($navs)
+    {
+        foreach( $navs as $k => $v ) 
+        {
+            $navs[$k]['in'] = false;
+        }
     }
 
     $stack = array();
     $result = array();
 
-    foreach( $navs as $k => $v ) {
-        if( $v['parent_id'] != 0 ) {
-            continue;
-        }
-        //入栈
-        $v['depth'] = 0;
-        $navs[$k]['in'] = true;
-        $v['depth'] = 0;
-        array_push($stack, $v);
-        array_push($result, $v);
+    if($navs)
+    {
+        foreach( $navs as $k => $v ) {
+            if( $v['parent_id'] != 0 ) {
+                continue;
+            }
+            //入栈
+            $v['depth'] = 0;
+            $navs[$k]['in'] = true;
+            $v['depth'] = 0;
+            array_push($stack, $v);
+            array_push($result, $v);
 
-        while( !empty($stack) ) {
-            $index = count($stack) - 1;
-            $temp = $stack[$index];
-            $no_children = true;
+            while( !empty($stack) ) {
+                $index = count($stack) - 1;
+                $temp = $stack[$index];
+                $no_children = true;
 
-            foreach( $navs as $k1 => $v1 ) {
-                if( $v1['in'] == true ) {
-                    continue;
+                foreach( $navs as $k1 => $v1 ) {
+                    if( $v1['in'] == true ) {
+                        continue;
+                    }
+                    if( $v1['parent_id'] == $temp['id'] ) { //存在下级导航，下级导航入栈
+                        $navs[$k1]['in'] = true;
+                        $v1['depth'] = $temp['depth'] + 1;
+                        array_push($stack, $v1);
+                        array_push($result, $v1);
+                        $no_children = false;
+                        break;
+                    }
                 }
-                if( $v1['parent_id'] == $temp['id'] ) { //存在下级导航，下级导航入栈
-                    $navs[$k1]['in'] = true;
-                    $v1['depth'] = $temp['depth'] + 1;
-                    array_push($stack, $v1);
-                    array_push($result, $v1);
-                    $no_children = false;
-                    break;
+                if( $no_children ) {    //不存在下级导航，弹栈
+                    array_pop($stack);
                 }
             }
-            if( $no_children ) {    //不存在下级导航，弹栈
-                array_pop($stack);
-            }
-        }
 
+        }
     }
 
     foreach( $result as $k => $v ) {
@@ -269,47 +276,53 @@ if( 'edit' == $act ) {
     $navs = $db->fetchAll($getNavs);
 
     //初始化入栈标志
-    foreach( $navs as $k => $v ) {
-        $navs[$k]['in'] = false;
+    if($navs)
+    {
+        foreach( $navs as $k => $v ) {
+            $navs[$k]['in'] = false;
+        }
     }
 
     $stack = array();
     $result = array();
 
-    foreach( $navs as $k => $v ) {
-        if( $v['parent_id'] != 0 ) {
-            continue;
-        }
-        //入栈
-        $v['depth'] = 0;
-        $navs[$k]['in'] = true;
-        $v['depth'] = 0;
-        array_push($stack, $v);
-        array_push($result, $v);
+    if($navs)
+    {
+        foreach( $navs as $k => $v ) {
+            if( $v['parent_id'] != 0 ) {
+                continue;
+            }
+            //入栈
+            $v['depth'] = 0;
+            $navs[$k]['in'] = true;
+            $v['depth'] = 0;
+            array_push($stack, $v);
+            array_push($result, $v);
 
-        while( !empty($stack) ) {
-            $index = count($stack) - 1;
-            $temp = $stack[$index];
-            $no_children = true;
+            while( !empty($stack) ) {
+                $index = count($stack) - 1;
+                $temp = $stack[$index];
+                $no_children = true;
 
-            foreach( $navs as $k1 => $v1 ) {
-                if( $v1['in'] == true ) {
-                    continue;
+                foreach( $navs as $k1 => $v1 ) {
+                    if( $v1['in'] == true ) {
+                        continue;
+                    }
+                    if( $v1['parent_id'] == $temp['id'] ) { //存在下级导航，下级导航入栈
+                        $navs[$k1]['in'] = true;
+                        $v1['depth'] = $temp['depth'] + 1;
+                        array_push($stack, $v1);
+                        array_push($result, $v1);
+                        $no_children = false;
+                        break;
+                    }
                 }
-                if( $v1['parent_id'] == $temp['id'] ) { //存在下级导航，下级导航入栈
-                    $navs[$k1]['in'] = true;
-                    $v1['depth'] = $temp['depth'] + 1;
-                    array_push($stack, $v1);
-                    array_push($result, $v1);
-                    $no_children = false;
-                    break;
+                if( $no_children ) {    //不存在下级导航，弹栈
+                    array_pop($stack);
                 }
             }
-            if( $no_children ) {    //不存在下级导航，弹栈
-                array_pop($stack);
-            }
-        }
 
+        }
     }
 
     foreach( $result as $k => $v ) {
@@ -370,49 +383,55 @@ if( 'view' == $act ) {
     $navs = $db->fetchAll($getNavs);
 
     //初始化入栈标志
-    foreach( $navs as $k => $v ) {
-        $navs[$k]['in'] = false;
+    if($navs)
+    {
+        foreach( $navs as $k => $v ) {
+            $navs[$k]['in'] = false;
+        }
     }
 
     $stack = array();
     $result = array();
 
-    foreach( $navs as $k => $v ) {
-        if( $v['parent_id'] != 0 ) {
-            continue;
-        }
-        //入栈
-        $v['depth'] = 0;
-        $navs[$k]['in'] = true;
-        $v['depth'] = 0;
-        array_push($stack, $v);
-        array_push($result, $v);
+    if($navs)
+    {
+        foreach( $navs as $k => $v ) {
+            if( $v['parent_id'] != 0 ) {
+                continue;
+            }
+            //入栈
+            $v['depth'] = 0;
+            $navs[$k]['in'] = true;
+            $v['depth'] = 0;
+            array_push($stack, $v);
+            array_push($result, $v);
 
-        while( !empty($stack) ) {
-            $index = count($stack) - 1;
-            $temp = $stack[$index];
-            $no_children = true;
+            while( !empty($stack) ) {
+                $index = count($stack) - 1;
+                $temp = $stack[$index];
+                $no_children = true;
 
-            foreach( $navs as $k1 => $v1 ) {
-                if( $v1['in'] == true ) {
-                    continue;
+                foreach( $navs as $k1 => $v1 ) {
+                    if( $v1['in'] == true ) {
+                        continue;
+                    }
+                    if( $v1['parent_id'] == $temp['id'] ) { //存在下级导航，下级导航入栈
+                        $navs[$k1]['in'] = true;
+                        $v1['depth'] = $temp['depth'] + 1;
+                        array_push($stack, $v1);
+                        array_push($result, $v1);
+                        $no_children = false;
+                        break;
+                    }
                 }
-                if( $v1['parent_id'] == $temp['id'] ) { //存在下级导航，下级导航入栈
-                    $navs[$k1]['in'] = true;
-                    $v1['depth'] = $temp['depth'] + 1;
-                    array_push($stack, $v1);
-                    array_push($result, $v1);
-                    $no_children = false;
-                    break;
+                if( $no_children ) {    //不存在下级导航，弹栈
+                    array_pop($stack);
                 }
             }
-            if( $no_children ) {    //不存在下级导航，弹栈
-                array_pop($stack);
-            }
-        }
 
+        }
     }
-
+    $target = array();
     foreach( $result as $k => $v ) {
         $prefix = '';
         $flag = false;
@@ -421,14 +440,14 @@ if( 'view' == $act ) {
             $flag = true;
         }
         $prefix .= '|--';
-        $result[$k]['name'] = $flag ? $prefix.$v['name'] : $v['name'];
+        $v['name'] = $flag ? $prefix.$v['name'] : $v['name'];
+        $target[$v['position']][] = $v;
     }
 
-    assign('navs', $result);
+    assign('navs', $target);
 }
 
 
 
 $template .= $act.'.phtml';
 $smarty->display($template);
-

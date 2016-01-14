@@ -33,6 +33,19 @@ global $log;
 $log_file = date('Ymd').'.log';
 $log = new Logs($debug_mode, $log_file);
 
+//读取网站设置
+$get_sysconf = 'select `key`,`value` from '.$db->table('sysconf');
+global $config;
+$config_tmp = $db->fetchAll($get_sysconf);
+$config = array();
+if($config_tmp)
+{
+    foreach($config_tmp as $tmp)
+    {
+        $config[$tmp['key']] = $tmp['value'];
+    }
+}
+
 //初始化smarty对象
 global $smarty;
 $smarty = new Smarty();
@@ -41,10 +54,13 @@ $smarty->setTemplateDir(ROOT_PATH.'control/themes/');
 $smarty->setCacheDir(ROOT_PATH.'control/data/caches');
 $smarty->setCacheLifetime(1800);//设置缓存文件超时时间为1800秒
 
+//设置网站参数
+assign('config', $config);
+
 //Debug模式下每次都强制编译输出
 if($debug_mode)
 {
-    //$smarty->clearAllCache();
-    //$smarty->clearCompiledTemplate();
+    $smarty->clearAllCache();
+    $smarty->clearCompiledTemplate();
     $smarty->force_compile = true;
 }

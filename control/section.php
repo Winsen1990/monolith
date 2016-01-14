@@ -93,13 +93,13 @@ if( 'add' == $opera ) {
         $id = $db->get_last_id();
         $path = $id.',';
         if( 0 < $parent_id ) {
-            $get_parent_path = 'select `path` from `'.DB_PREFIX.'section` where `id`='.$parent_id;
+            $get_parent_path = 'select `path` from '.$db->table('section').' where `id`='.$parent_id;
             if( $parent_path = $db->fetchRow($get_parent_path) ) {
                 $path = $parent_path['path'].','.$path;
             }
         }
 
-        $update_section = 'update `'.DB_PREFIX.'section` set `path`=\''.$path.'\' where `id`='.$id.' limit 1';
+        $update_section = 'update '.$db->table('section').' set `path`=\''.$path.'\' where `id`='.$id.' limit 1';
         if( $db->update($update_section) ) {
             $links = array(
                 array('alt'=>'查看栏目', 'link'=>'section.php?act=list'),
@@ -133,7 +133,7 @@ if( 'edit' == $opera ) {
         exit;
     }
 
-    $get_section = 'select * from `'.DB_PREFIX.'section` where `id`='.$id.' limit 1';
+    $get_section = 'select * from '.$db->table('section').' where `id`='.$id.' limit 1';
     $section = $db->fetchRow($get_section);
 
     if( empty($section) ) {
@@ -191,7 +191,7 @@ if( 'edit' == $opera ) {
     }
 
     if( 0 < $parent_id ) {
-        $get_parent_path = 'select `path` from `'.DB_PREFIX.'section` where `id`='.$parent_id;
+        $get_parent_path = 'select `path` from '.$db->table('section').' where `id`='.$parent_id;
         if( $parent_path = $db->fetchRow($get_parent_path) ) {
             $path = $parent_path['path'].','.$id.',';
         }
@@ -246,18 +246,22 @@ if( 'view' == $act ) {
     $get_section_list = 'select * from '.$db->table('section').' where 1  order by `order_view` ASC,`path` ASC';
     $section_list = $db->fetchAll($get_section_list);
 
-    foreach($section_list as $key => $section) {
-        $count = count(explode(',', $section['path']));
-        if($count > 1)
+    if($section_list)
+    {
+        foreach($section_list as $key => $section) 
         {
-            $temp = '|--'.$section['section_name'];
-            while($count--)
+            $count = count(explode(',', $section['path']));
+            if($count > 1)
             {
-                $temp = '&nbsp;&nbsp;'.$temp;
-            }
+                $temp = '|--'.$section['section_name'];
+                while($count--)
+                {
+                    $temp = '&nbsp;&nbsp;'.$temp;
+                }
 
-            $section['section_name'] = $temp;
-            $section_list[$key] = $section;
+                $section['section_name'] = $temp;
+                $section_list[$key] = $section;
+            }
         }
     }
 
@@ -275,18 +279,22 @@ if( 'add' == $act ) {
     $get_section_list = 'select * from '.$db->table('section').' where 1 order by `path` ASC';
     $section_list = $db->fetchAll($get_section_list);
 
-    foreach($section_list as $key => $section) {
-        $count = count(explode(',', $section['path']));
-        if($count > 1)
+    if($section_list)
+    {
+        foreach($section_list as $key => $section) 
         {
-            $temp = '|--'.$section['section_name'];
-            while($count--)
+            $count = count(explode(',', $section['path']));
+            if($count > 1)
             {
-                $temp = '&nbsp;&nbsp;'.$temp;
-            }
+                $temp = '|--'.$section['section_name'];
+                while($count--)
+                {
+                    $temp = '&nbsp;&nbsp;'.$temp;
+                }
 
-            $section['section_name'] = $temp;
-            $section_list[$key] = $section;
+                $section['section_name'] = $temp;
+                $section_list[$key] = $section;
+            }
         }
     }
 
@@ -316,7 +324,7 @@ if( 'edit' == $act ) {
         exit;
     }
 
-    $get_section = 'select * from `'.DB_PREFIX.'section` where `id`='.$id.' limit 1';
+    $get_section = 'select * from '.$db->table('section').' where `id`='.$id.' limit 1';
     $section = $db->fetchRow($get_section);
 
     if( empty($section) ) {
@@ -329,18 +337,21 @@ if( 'edit' == $act ) {
     $get_section_list = 'select * from '.$db->table('section').' where `id` <> '.$id.'  order by `path` ASC';
     $section_list = $db->fetchAll($get_section_list);
 
-    foreach($section_list as $key => $section) {
-        $count = count(explode(',', $section['path']));
-        if($count > 1)
-        {
-            $temp = '|--'.$section['section_name'];
-            while($count--)
+    if($section_list)
+    {
+        foreach($section_list as $key => $section) {
+            $count = count(explode(',', $section['path']));
+            if($count > 1)
             {
-                $temp = '&nbsp;&nbsp;'.$temp;
-            }
+                $temp = '|--'.$section['section_name'];
+                while($count--)
+                {
+                    $temp = '&nbsp;&nbsp;'.$temp;
+                }
 
-            $section['section_name'] = $temp;
-            $section_list[$key] = $section;
+                $section['section_name'] = $temp;
+                $section_list[$key] = $section;
+            }
         }
     }
 
@@ -373,7 +384,7 @@ if( 'delete' == $act ) {
         exit;
     }
 
-    $check_section = 'select `id` from `'.DB_PREFIX.'section` where `parent_id`='.$id;
+    $check_section = 'select `id` from '.$db->table('section').' where `parent_id`='.$id;
     $section = $db->fetchAll($check_section);
     if($section) {
         show_system_message('当前栏目下有子栏目，请先删除或移走子栏目', array());
@@ -385,7 +396,7 @@ if( 'delete' == $act ) {
         exit;
     }
 
-    $delete_section = 'delete from `'.DB_PREFIX.'section` where `id`='.$id.' limit 1';
+    $delete_section = 'delete from '.$db->table('section').' where `id`='.$id.' limit 1';
     if($db->delete($delete_section)) {
         show_system_message('删除栏目成功', array());
         exit;

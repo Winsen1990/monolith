@@ -14,7 +14,7 @@
                 <p class="clear">
                     <label class="l-title">替换文字:</label>
                     <input class="text-input w300" type="text" id="alt" name="alt" placeholder="请输入替换文字"/>
-                    <span class="error-input" id="alt-error">{if isset($error.alt)}{$error.alt}{/if}</span>
+                    <span class="error-input" id="alt-error">{if isset($error.alt)}{$error.alt}{else}-如果图片显示异常，替换文字将会显示，避免影响用户体验{/if}</span>
                 </p>
                 <p class="clear">
                     <label class="l-title">广告链接:</label>
@@ -52,7 +52,8 @@
                     <label class="l-title">广告图片：</label>
                     <input type="button" class="text-input" id="select-image" value="请选择广告图片" style="cursor:pointer">
                     <input type="hidden" class="" name="img" id="img" value=""/>
-                    <span class="error-input" id="img-error">{if isset($error.img)}{$error.img}{/if}</span>
+                    <span class="error-input" id="img-error">{if isset($error.img)}{$error.img}{else}请先选择广告位{/if}</span>
+                    <span class="error-input" id="img-notice"></span>
                 </p>
                 <p id="img-show">
                     <label class="l-title"></label>
@@ -80,11 +81,14 @@ function check_forever(value) {
         $("#available-time").show();
     }
 }
-
 var adpos_json = {$adpos_json};
 function select_ad(id) {
     if(adpos_json[id] != undefined) {
         $("#show-image").attr({ "width":adpos_json[id].width, "height":adpos_json[id].height });
+        $('#img-notice').text(adpos_json[id].width + '*' + adpos_json[id].height + ',大小不要超过100k');
+        if( $('#img-error').text() == '请先选择广告位' ) {
+            $('#img-error').text('');
+        }
     }
 }
 

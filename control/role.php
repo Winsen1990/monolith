@@ -150,7 +150,7 @@ if( 'add' == $act ) {
         exit;
     }
 
-    global $purview, $L_purview;
+    global $menus, $purview, $L_purview;
     assign('purviews', $purview);
     assign('purviewValue', $L_purview);
 }

@@ -103,7 +103,7 @@ if('view' == $act)
     }
 
 
-    $getSysconf = 'select `key`,`name`,`type`,`value`, `remark`, `group` from `'.DB_PREFIX.'sysconf` order by `group` asc';
+    $getSysconf = 'select `key`,`name`,`type`,`value`, `remark`, `group` from `'.DB_PREFIX.'sysconf` where `group` = \'data\' order by `group` asc';
     $sysconf = $db->fetchAll($getSysconf);
     assign('sysconf', $sysconf);
 
