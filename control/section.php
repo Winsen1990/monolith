@@ -33,6 +33,7 @@ if( 'add' == $opera ) {
     $parent_id = getPOST('parentId');
     $keywords = trim(getPOST('keywords'));
     $description = trim(getPOST('description'));
+    $template = trim(getPOST('template'));
     $order_view = intval(getPOST('order_view'));
     $path = '';
     $original = trim(getPOST('img'));
@@ -72,6 +73,11 @@ if( 'add' == $opera ) {
 
     }
 
+    if($template == '')
+    {
+        $template = 'article_list.phtml';
+    }
+
     $parent_id = intval($parent_id);
     if( 0 > $parent_id ) {
         show_system_message('参数错误', array());
@@ -87,6 +93,7 @@ if( 'add' == $opera ) {
         'order_view' => $order_view,
         'thumb' => $thumb,
         'original' => $original,
+        'template' => $template
     );
 
     if( $db->autoInsert('section', array($data)) ) {
@@ -145,6 +152,7 @@ if( 'edit' == $opera ) {
     $parent_id = getPOST('parentId');
     $keywords = trim(getPOST('keywords'));
     $description = trim(getPOST('description'));
+    $tempalte = trim(getPOST('template'));
     $order_view = intval(getPOST('order_view'));
     $path = '';
     $original = trim(getPOST('img'));
@@ -172,6 +180,11 @@ if( 'edit' == $opera ) {
         $description = $db->escape(htmlspecialchars($description));
     }
 
+    if($template == '')
+    {
+        $template = 'article_list.phtml';
+    }
+
     if( '' == $original ) {
 
     } else {
@@ -197,8 +210,6 @@ if( 'edit' == $opera ) {
         }
     }
 
-
-
     $data = array(
         'section_name' => $name,
         'parent_id' => $parent_id,
@@ -208,6 +219,7 @@ if( 'edit' == $opera ) {
         'order_view' => $order_view,
         'thumb' => $thumb,
         'original' => $original,
+        'template' => $template
     );
 
     foreach( $data as $key => $value ) {
@@ -227,8 +239,6 @@ if( 'edit' == $opera ) {
         show_system_message('系统繁忙，请稍后重试', array());
         exit;
     }
-
-
 }
 
 
@@ -308,6 +318,10 @@ if( 'add' == $act ) {
     }
 
     assign('configs', $target);
+
+    //读取可用的模板文件
+    $template_config = simplexml_load_file(ROOT_PATH.'themes/'.$target['themes'].'/themes.xml');
+    assign('template_list', $template_config->article_list->template);
 }
 
 //编辑栏目

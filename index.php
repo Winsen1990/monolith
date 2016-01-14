@@ -7,17 +7,19 @@
  */
 include 'library/init.inc.php';
 
-$section_id = array(2,3,4,6,8);
+$get_ad_list = 'select `img`,`url`,`alt`,`ad_pos_id` from '.$db->table('ad').' where `ad_pos_id`<=6 order by `ad_pos_id`';
+$ad_list_tmp = $db->fetchAll($get_ad_list);
 
-$get_article_list = 'select `section_id`,`id`,`title` from '.$db->table('content').' where `section_id`=%d order by order_view ASC, add_time DESC limit 24';
-$article_list = array();
+$ad_list = array();
 
-foreach($section_id as $id)
+if($ad_list_tmp)
 {
-    $get_article_sql = sprintf($get_article_list, $id);
-
-    $article_list[$id] = $db->fetchAll($get_article_sql);
+    foreach($ad_list_tmp as $ad_item)
+    {
+        $ad_list[$ad_item['ad_pos_id']] = $ad_item;
+    }
 }
 
-assign('article_list', $article_list);
+assign('ad_list', $ad_list);
+
 $smarty->display('index.phtml');

@@ -9,6 +9,7 @@
 session_start();
 date_default_timezone_set('Asia/Shanghai');
 define('ROOT_PATH', str_replace('library/init.inc.php', '',str_replace('\\', '/', __FILE__)));
+define('BASE_DIR', str_replace($_SERVER['DOCUMENT_ROOT'], '',str_replace('\\', '/', ROOT_PATH)));
 if(!class_exists('AutoLoader'))
 {
     include('AutoLoader.class.php');
@@ -36,9 +37,12 @@ $log = new Logs($debug_mode, $log_file);
 $get_sysconf = 'select `key`,`value` from '.$db->table('sysconf');
 global $config;
 $config_tmp = $db->fetchAll($get_sysconf);
-foreach($config_tmp as $tmp)
+if($config_tmp)
 {
-    $config[$tmp['key']] = $tmp['value'];
+    foreach($config_tmp as $tmp)
+    {
+        $config[$tmp['key']] = $tmp['value'];
+    }
 }
 
 //初始化smarty对象
@@ -52,8 +56,6 @@ $smarty->setCacheLifetime(1800);//设置缓存文件超时时间为1800秒
 //Debug模式下每次都强制编译输出
 if($debug_mode)
 {
-    //$smarty->clearAllCache();
-    //$smarty->clearCompiledTemplate();
     $smarty->force_compile = true;
 }
 
@@ -74,15 +76,27 @@ $nav = array(
     'bottom' => array()
 );
 
-foreach($nav_tmp as $n)
+$current_script = str_replace(BASE_DIR, '', $_SERVER['REQUEST_URI']);
+
+if($nav_tmp)
 {
-    $get_children = 'select `name`,`url`,`position` from '.$db->table('nav').' where `parent_id`='.$n['id'].' order by order_view ASC';
-    $nav[$n['position']][] = array(
-        'name' => $n['name'],
-        'url' => $n['url'],
-        'current' => false,
-        'children' => $db->fetchAll($get_children)
-    );
+    foreach($nav_tmp as $n)
+    {
+        $current = false;
+
+        if($current_script == $n['url'])
+        {
+            $current = true;
+        }
+
+        $get_children = 'select `name`,`url`,`position` from '.$db->table('nav').' where `parent_id`='.$n['id'].' order by order_view ASC';
+        $nav[$n['position']][] = array(
+            'name' => $n['name'],
+            'url' => $n['url'],
+            'current' => $current,
+            'children' => $db->fetchAll($get_children)
+        );
+    }
 }
 
 assign('nav', $nav);

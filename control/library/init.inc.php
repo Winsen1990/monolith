@@ -64,3 +64,16 @@ if($debug_mode)
     $smarty->clearCompiledTemplate();
     $smarty->force_compile = true;
 }
+
+//读取网站设置
+$get_sysconf = 'select `key`,`value` from '.$db->table('sysconf');
+global $config;
+$config_tmp = $db->fetchAll($get_sysconf);
+if($config_tmp)
+{
+    foreach($config_tmp as $tmp)
+    {
+        $config[$tmp['key']] = $tmp['value'];
+    }
+}
+assign('config', $config);
